@@ -1,15 +1,15 @@
 
 
-module ApartadoA.Ejemplos where
+module ApartadoM.Ejemplos where
 
-    import ApartadoA.Func.Factoriales
+    import ApartadoM.Func.Factoriales
 
     a :: Integer
     a = fact7 5
     b :: Integer
     b = fact8 6
 
-    mainA = do  print ("MAIN A")
+    mainA = do  print ("MAIN M")
                 print ("Factorial 5 (fact7) = " ++ show a)
                 print ("Factorial 6 (fact8) = " ++ show b)
                 print ("Factorial 7 (fact7) = " ++ show (fact7 7))

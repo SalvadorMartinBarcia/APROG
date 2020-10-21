@@ -97,7 +97,7 @@ module ApartadoA.ApartadoA where
         -- Tests
         print ("Venta1 test precio = " ++ show (precioVenta v1))
         print ("Factura1 test precio = " ++ show (precioFactura fact1))
-        print ("Fusion 2 facturas: " ++ show (fact1 `fusion2Facturas` fact2))
+        print ("Fusion 2 facturas: " ++ show (fusion2Facturas fact1 fact2))
         print("Precio total de un articulo en una factura: " ++ show (precArtFact a1 fact3))
 
         -- Tests de conversion a cadenas

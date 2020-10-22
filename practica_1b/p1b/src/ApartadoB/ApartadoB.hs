@@ -6,7 +6,7 @@ module ApartadoB.ApartadoB where
     data Factura = Factura {ventas :: [Venta]}
     data Venta =    VentaUnitaria {articulo :: Articulo} | 
                     Venta {articulo :: Articulo, cantidad :: Int} |
-                    (:+) {articulo :: Articulo}
+                    (:+) {articulo :: Articulo, cantidad :: Int}
     data Articulo = Articulo {nid :: Int, nombre :: [Char], precio :: Float}
 
 
@@ -14,6 +14,7 @@ module ApartadoB.ApartadoB where
     -- precio de una venta
     precioVenta :: Venta -> Float
     precioVenta (Venta x y) = precio x * (fromIntegral y)
+    precioVenta ((:+) x y) = precio x * (fromIntegral y)
     precioVenta (VentaUnitaria x) = precio x
 
     -- precio de una factura
@@ -48,6 +49,7 @@ module ApartadoB.ApartadoB where
     instance Show Venta where
         show (VentaUnitaria x) = "VentaUnitaria "++show x
         show (Venta x y) = "Venta "++show x++" "++show y
+        show ((:+) x y) = "Venta "++show x++" "++show y
     
     convCadenaVenta :: Venta -> [Char]
     convCadenaVenta x = show x
@@ -87,6 +89,7 @@ module ApartadoB.ApartadoB where
     cantidadVenta :: Venta -> Int
     cantidadVenta (Venta a c) = c
     cantidadVenta (VentaUnitaria a) = 1
+    cantidadVenta ((:+) a c) = c
     
     -- eliminación en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada
     elim2 :: Factura -> Int -> Factura
@@ -108,8 +111,11 @@ module ApartadoB.ApartadoB where
         
         let a3 = Articulo 3 "Napolitana" 1.05
         let v3 = Venta a3 1
-        
-        let fact1 = Factura [v1,v2]
+
+        let a4 = Articulo 4 "Platano" 1.5
+        let v4 = a4 :+ 2
+
+        let fact1 = Factura [v1,v2,v4]
         let fact2 = Factura [v3,v1]
 
         let fact3 = (fusion2Facturas fact1 fact2)

@@ -6,8 +6,10 @@ module ApartadoB.ApartadoB where
     data Factura = Factura {ventas :: [Venta]}
     data Venta =    VentaUnitaria {articulo :: Articulo} | 
                     Venta {articulo :: Articulo, cantidad :: Int} |
-                    Articulo :+ Integer
+                    (:+) {articulo :: Articulo}
     data Articulo = Articulo {nid :: Int, nombre :: [Char], precio :: Float}
+
+
 
     -- precio de una venta
     precioVenta :: Venta -> Float
@@ -82,17 +84,18 @@ module ApartadoB.ApartadoB where
                 elim1aux (x:xs) art2    | (nid (articulo x)) == (nid art2) = elim1aux xs art2
                                         | otherwise = x : elim1aux xs art2
 
+    cantidadVenta :: Venta -> Int
+    cantidadVenta (Venta a c) = c
+    cantidadVenta (VentaUnitaria a) = 1
+    
     -- eliminación en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada
     elim2 :: Factura -> Int -> Factura
     elim2 fact c = Factura (elim2aux (ventas fact) c)
         where   elim2aux [] _ = []
                 elim2aux (x:xs) c1 = (elim2aux2 x c1) ++ (elim2aux xs c1)
-                elim2aux2 (Venta a c2) c1 = if c2 >= c1 then
-                                                [(Venta a c2)]
+                elim2aux2 v c1 = if (cantidadVenta v) >= c1 then
+                                                [v]
                                             else []
-                elim2aux2 (VentaUnitaria a) c1 =   if 1 >= c1 then
-                                                        [(VentaUnitaria a)]
-                                                    else []
                                     
     mainB :: IO ()
     mainB = do

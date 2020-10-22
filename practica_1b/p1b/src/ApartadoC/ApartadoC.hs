@@ -1,7 +1,7 @@
 
 {-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 
-module ApartadoB.ApartadoB where
+module ApartadoC.ApartadoC where
 
     data Factura = Factura {ventas :: [Venta]}
     data Venta =    VentaUnitaria {articulo :: Articulo} | 
@@ -18,6 +18,7 @@ module ApartadoB.ApartadoB where
 
     -- precio de una factura
     precioFactura :: Factura -> Float
+	precioFactura fact = []
     precioFactura fact = precioFacturaux (ventas fact)
         where   precioFacturaux [] = 0
                 precioFacturaux (x:xs) = (precioVenta x) + (precioFacturaux xs)
@@ -98,7 +99,22 @@ module ApartadoB.ApartadoB where
                 elim2aux2 v c1 = if (cantidadVenta v) >= c1 then
                                                 [v]
                                             else []
-                                    
+    
+	
+	instance Eq Venta where
+		x == y = (nid (articulo x)) == (nid (articulo y))
+		x /= y = not (x == y)
+	-- eliminar repeticiones de artículos en una factura
+	elim3 :: Factura -> Factura
+	elim3 fact = Factura (elim3aux [] (ventas fact))
+		where 	elim3aux seen [] = seen
+				elim3aux seen (x:xs) 	| elem x seen = elim3aux (unirAux seen seen x) xs
+										| otherwise = elim3aux (seen ++ [x]) xs
+				unirAux (y:ys) seen x = if (x /= y) then
+											unirAux ys seen x
+										else
+											(ventas (elim1 (Factura seen) (articulo x))) ++ (Venta (articulo x) ((cantidad x)+(cantidad y))
+	
     mainB :: IO ()
     mainB = do
 
@@ -143,6 +159,7 @@ module ApartadoB.ApartadoB where
         print("TEST DE ELIMINACIONES")
         print("Eliminacion en una factura de las ventas relativas a un determinado articulo: "++show (elim1 fact3 a1))
         print("Eliminacion en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada: "++show (elim2 fact3 2))
+		print("LOLOLOLO: "++show (elim3 fact3))
 		
 		-- "venta1 test precio = 3.1499999"
 		-- "factura1 test precio = 8.15"

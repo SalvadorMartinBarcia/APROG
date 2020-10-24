@@ -3,6 +3,8 @@ module Main where
 import ApartadoA.ApartadoA
 import ApartadoB.ApartadoB
 import ApartadoC.ApartadoC
+import ApartadoD.ApartadoD
+import ApartadoE.ApartadoE
 
 main :: IO ()
-main = mainC
+main = mainD

@@ -1,7 +1,7 @@
 
 {-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 
-module ApartadoC.ApartadoC where
+module ApartadoE.ApartadoE where
 
     data Factura = Factura {ventas :: [Venta]}
     data Venta =    VentaUnitaria {articulo :: Articulo} | 
@@ -110,8 +110,8 @@ module ApartadoC.ApartadoC where
                                             (ventas (elim1 (Factura seen) (articulo x))) ++ [(Venta (articulo x) ((cantidadVenta x)+(cantidadVenta y)))]
                                             
 
-    mainC :: IO ()
-    mainC = do
+    mainE :: IO ()
+    mainE = do
 
         let a1 = Articulo 1 "Coco" 1.05
         let v1 = Venta a1 3

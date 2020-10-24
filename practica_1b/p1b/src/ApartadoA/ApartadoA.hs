@@ -94,6 +94,7 @@ module ApartadoA.ApartadoA where
 
         let fact3 = (fact1 ++++ fact2)
 
+        print ("-------------------------------APARTADO A----------------------------")
         -- Tests
         print ("Venta1 test precio = " ++ show (precioVenta v1))
         print ("Factura1 test precio = " ++ show (precioFactura fact1))
@@ -119,8 +120,7 @@ module ApartadoA.ApartadoA where
         print("Eliminacion en una factura de las ventas relativas a un determinado articulo: "++show (elim1 fact3 a1))
         print("Eliminacion en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada: "++show (elim2 fact3 2))
 
-        -- Muestra de la ejecucion esperada
-
+        -- Resultado de la ejecución
         -- "Venta1 test precio = 3.1499999"
         -- "Factura1 test precio = 9.15"
         -- "Fusion 2 facturas: [((1,\"Coco\",1.05),3),((2,\"Chocolate\",2.0),3),((3,\"Napolitana\",1.05),1),((1,\"Coco\",1.05),3)]" 

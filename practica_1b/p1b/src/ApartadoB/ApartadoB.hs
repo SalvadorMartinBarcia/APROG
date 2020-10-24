@@ -24,8 +24,7 @@ module ApartadoB.ApartadoB where
     
     -- fusión de 2 facturas
     fusion2Facturas :: Factura -> Factura -> Factura
-    fusion2Facturas x y = Factura (fusion2Facturasaux (ventas x) (ventas y))
-        where fusion2Facturasaux x y = x ++ y
+    fusion2Facturas x y = Factura ((ventas x) ++ (ventas y))
 
     -- -- precio total de un artículo en una factura
     precArtFact :: Articulo -> Factura -> Float
@@ -86,9 +85,9 @@ module ApartadoB.ApartadoB where
                                         | otherwise = x : elim1aux xs art2
 
     cantidadVenta :: Venta -> Int
-    cantidadVenta (Venta a c) = c
-    cantidadVenta (VentaUnitaria a) = 1
-    cantidadVenta ((:+) a c) = c
+    cantidadVenta (Venta _ c) = c
+    cantidadVenta (VentaUnitaria _) = 1
+    cantidadVenta ((:+) _ c) = c
     
     -- eliminación en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada
     elim2 :: Factura -> Int -> Factura
@@ -109,7 +108,7 @@ module ApartadoB.ApartadoB where
         let v2 = VentaUnitaria a2
         
         let a3 = Articulo 3 "Napolitana" 1.05
-        let v3 = Venta a3 1
+        let v3 = Venta a3 2
 
         let a4 = Articulo 4 "Platano" 1.5
         let v4 = a4 :+ 2
@@ -119,6 +118,8 @@ module ApartadoB.ApartadoB where
 
         let fact3 = (fusion2Facturas fact1 fact2)
 
+
+        print ("-------------------------------APARTADO B----------------------------")
         -- Tests
         print ("Venta1 test precio = " ++ show (precioVenta v1))
         print ("Factura1 test precio = " ++ show (precioFactura fact1))
@@ -143,21 +144,22 @@ module ApartadoB.ApartadoB where
         print("TEST DE ELIMINACIONES")
         print("Eliminacion en una factura de las ventas relativas a un determinado articulo: "++show (elim1 fact3 a1))
         print("Eliminacion en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada: "++show (elim2 fact3 2))
-		
-		-- "venta1 test precio = 3.1499999"
-		-- "factura1 test precio = 8.15"
-		-- "fusion 2 facturas: {venta \"coco\" 3, {ventaunitaria \"chocolate\", {venta \"platano\" 2, {venta \"napolitana\" 1, venta \"coco\" 3}"
-		-- "precio total de un articulo en una factura: 6.2999997"
-		-- ""
-		-- "TEST DE CONVERSION A CADENAS"
-		-- "conversion a cadena de articulo: \"coco\""
-		-- "conversion a cadena de venta: venta \"coco\" 3"
-		-- "conversion a cadena de factura: {venta \"coco\" 3, {ventaunitaria \"chocolate\", venta \"platano\" 2}"
-		-- ""
-		-- "TEST DE BUSQUEDAS"
-		-- "busqueda en una factura de las ventas relativas a un articulo: {venta \"coco\" 3, venta \"coco\" 3}"
-		-- "busqueda en una factura de las ventas relativas a una lista de articulos: {ventaunitaria \"chocolate\", venta \"napolitana\" 1}"
-		-- ""
-		-- "TEST DE ELIMINACIONES"
-		-- "eliminacion en una factura de las ventas relativas a un determinado articulo: {ventaunitaria \"chocolate\", {venta \"platano\" 2, venta \"napolitana\" 1}"
-		-- "eliminacion en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada: {Venta \"Coco\" 3, {Venta \"Platano\" 2, Venta \"Coco\" 3}"
+        
+        -- Resultado de la ejecución
+        -- "venta1 test precio = 3.1499999"
+        -- "factura1 test precio = 8.15"
+        -- "fusion 2 facturas: {venta \"coco\" 3, {ventaunitaria \"chocolate\", {venta \"platano\" 2, {venta \"napolitana\" 1, venta \"coco\" 3}"
+        -- "precio total de un articulo en una factura: 6.2999997"
+        -- ""
+        -- "TEST DE CONVERSION A CADENAS"
+        -- "conversion a cadena de articulo: \"coco\""
+        -- "conversion a cadena de venta: venta \"coco\" 3"
+        -- "conversion a cadena de factura: {venta \"coco\" 3, {ventaunitaria \"chocolate\", venta \"platano\" 2}"
+        -- ""
+        -- "TEST DE BUSQUEDAS"
+        -- "busqueda en una factura de las ventas relativas a un articulo: {venta \"coco\" 3, venta \"coco\" 3}"
+        -- "busqueda en una factura de las ventas relativas a una lista de articulos: {ventaunitaria \"chocolate\", venta \"napolitana\" 1}"
+        -- ""
+        -- "TEST DE ELIMINACIONES"
+        -- "eliminacion en una factura de las ventas relativas a un determinado articulo: {ventaunitaria \"chocolate\", {venta \"platano\" 2, venta \"napolitana\" 1}"
+        -- "eliminacion en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada: {Venta \"Coco\" 3, {Venta \"Platano\" 2, Venta \"Coco\" 3}"

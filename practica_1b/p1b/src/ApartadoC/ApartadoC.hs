@@ -65,9 +65,9 @@ module ApartadoC.ApartadoC where
     
     -- conversión a cadena de una factura
     instance Show Factura where
-        show x = imp (ventas x)
+        show x = "{" ++ imp (ventas x)
             where   imp [y] = show y ++ "}"
-                    imp (y:ys) = "{" ++ show y ++ ", " ++ imp ys
+                    imp (y:ys) = show y ++ ", " ++ imp ys
     
     convCadenaFactura :: Factura -> [Char]
     convCadenaFactura x = show x

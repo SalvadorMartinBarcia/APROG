@@ -7,4 +7,4 @@ import ApartadoD.ApartadoD
 import ApartadoE.ApartadoE
 
 main :: IO ()
-main = mainD
+main = mainE

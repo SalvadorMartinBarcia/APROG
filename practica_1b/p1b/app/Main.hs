@@ -5,6 +5,7 @@ import ApartadoB.ApartadoB
 import ApartadoC.ApartadoC
 import ApartadoD.ApartadoD
 import ApartadoE.ApartadoE
+import ApartadoF.ApartadoF
 
 main :: IO ()
-main = mainE
+main = mainF

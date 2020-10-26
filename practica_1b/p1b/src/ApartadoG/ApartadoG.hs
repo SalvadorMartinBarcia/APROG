@@ -2,8 +2,8 @@
 {-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 
 module ApartadoG.ApartadoG where
-
-    data a = Arb a [Arbol a]
+                                        
+    data Arbol a = Arb a [Arbol a]
     data Factura = Factura {ventas :: [Arbol Venta]}
     data Venta =    VentaUnitaria {articulo :: Articulo} | 
                     Venta {articulo :: Articulo, cantidad :: Int} |
@@ -21,32 +21,35 @@ module ApartadoG.ApartadoG where
     precioVenta (Venta x y) = precio x * (fromIntegral y)
     precioVenta ((:+) x y) = precio x * (fromIntegral y)
     precioVenta (VentaUnitaria x) = precio x
-
-    -- función auxiliar que se puede pasar como parametro a precioFactura
-    precioFacturaux :: [Venta] -> Float
-    precioFacturaux [] = 0
-    precioFacturaux (x:xs) = (precioVenta x) + (precioFacturaux xs)
-
-    -- precio de una factura
-    precioFactura :: ([Venta] -> Float) -> Factura -> Float
-    precioFactura func fact = func (ventas fact)
     
+    getVenta :: [Arbol a] -> a
+    getVenta [(Arb a _)] = a
+
+    getArbol :: [Arbol c] -> [Arbol c]
+    getArbol [(Arb _ b)] = b
+
+    -- precioFactura :: Factura -> Float
+    -- precioFactura x = precioFacturaux (getVenta (ventas x)) (getArbol (ventas x))
+    --     where   precioFacturaux v [] = precioVenta v
+    --             precioFacturaux v [x1] = precioVenta v + precioFacturaux (getVenta x1) (getArbol x1)
+    
+
     -- -- fusión de 2 facturas
     -- fusion2Facturas :: Factura -> Factura -> Factura
-    -- fusion2Facturas x y = Factura ((ventas x) ++ (ventas y))
-
-    -- -- función auxiliar que se puede pasar como parametro a precArtFact
-    -- precArtFactaux :: Articulo -> [Venta] -> Float
-    -- precArtFactaux _ [] = 0
-    -- precArtFactaux art2 (y:ys) = 
-    --     if nid art2 /= (nid (articulo y)) then
-    --         precArtFactaux art2 ys
-    --     else
-    --         (precioVenta y) + (precArtFactaux art2 ys)
+    -- fusion2Facturas x y = Factura (fusion2Facturasaux (getVenta (ventas x)) (getArbol (ventas x)) (ventas y))
+    --     where   fusion2Facturasaux vx [] y = Arb vx [y]
+    --             fusion2Facturasaux vx [ax] y = Arb vx [(fusion2Facturasaux (getVenta ax) (getArbol ax) y)]
 
     -- -- precio total de un artículo en una factura
-    -- precArtFact :: (Articulo -> [Venta] -> Float) -> Articulo -> Factura -> Float
-    -- precArtFact func art x = func art (ventas x)
+    -- precArtFact :: Articulo -> Factura -> Float
+    -- precArtFact art x = precArtFactaux art (getVenta (ventas x)) (getArbol (ventas x))
+    --     where   precArtFactaux  art1 v [] =     if nid art1 == (nid (articulo v)) then
+    --                                                 precioVenta v 
+    --                                             else 0
+    --             precArtFactaux  art1 v [ay] =   if nid art1 == (nid (articulo v)) then
+    --                                                 precioVenta v + (precArtFactaux art1 (getVenta ay) (getArbol ay))
+    --                                             else 
+    --                                                 precArtFactaux art1 (getVenta ay) (getArbol ay)
 
     -- -- conversión a cadena de un artículo
     -- instance Show Articulo where
@@ -63,19 +66,28 @@ module ApartadoG.ApartadoG where
     
     -- convCadenaVenta :: Venta -> [Char]
     -- convCadenaVenta x = show x
-    
-    -- -- conversión a cadena de una factura
+
     -- instance Show Factura where
-    --     show x = "{" ++ imp (ventas x)
-    --         where   imp [y] = show y ++ "}"
-    --                 imp (y:ys) = show y ++ ", " ++ imp ys
+    --     show x = "{" ++ imp (getVenta (ventas x)) (getArbol (ventas x))
+    --         where   imp v [] = show v ++ "}"
+    --                 imp v [a] = show v ++ ", " ++ imp (getVenta a) (getArbol a)
     
     -- convCadenaFactura :: Factura -> [Char]
     -- convCadenaFactura x = show x
 
-    -- -- búsqueda en una factura de las ventas relativas a un artículo
-    -- busquedaDeVentas1 :: Factura -> Articulo -> Factura
-    -- busquedaDeVentas1 x art = Factura [a | a <- ventas x, (nid (articulo a)) == (nid art)]
+    -- búsqueda en una factura de las ventas relativas a un artículo
+    busquedaDeVentas1 :: Factura -> Articulo -> Factura
+    busquedaDeVentas1 x art = Factura [(busquedaDeVentas1aux art (getVenta (ventas x)) (getArbol (ventas x)))]
+        where   busquedaDeVentas1aux art v [] =     if (nid (articulo v)) == (nid art) then
+                                                        Arb v []
+                                                    else
+                                                        []
+                busquedaDeVentas1aux art v a2 =   if (nid (articulo v)) == (nid art) then
+                                                        Arb v [busquedaDeVentas1aux art (getVenta a2) (getArbol a2)]
+                                                    else
+                                                        busquedaDeVentas1aux art (getVenta a2) (getArbol a2)
+
+    --busquedaDeVentas1 x art = Factura [a | a <- ventas x, (nid (articulo a)) == (nid art)]
 
     -- -- función auxiliar que se puede pasar como parametro a busquedaDeVentas2
     -- busquedaDeVentas2aux :: Factura -> [Articulo] -> Factura
@@ -111,8 +123,8 @@ module ApartadoG.ApartadoG where
     --                                         (ventas (elim1 (Factura seen) (articulo x))) ++ [(Venta (articulo x) ((cantidadVenta x)+(cantidadVenta y)))]
                                             
 
-    mainC :: IO ()
-    mainC = do
+    mainG :: IO ()
+    mainG = do
 
         let a1 = Articulo 1 "Coco" 1.05
         let v1 = Venta a1 3
@@ -126,19 +138,25 @@ module ApartadoG.ApartadoG where
         let a4 = Articulo 4 "Platano" 1.5
         let v4 = a4 :+ 2
 
-        let arb1 = Arb v1 [Arb v2]
-        let fact1 = Factura v1 [v2,v4]
-        -- let fact2 = Factura [v3,v1]
+        let arb2 = Arb v3 []
+        let arb1 = Arb v2 [arb2]
+        let arb0 = Arb v1 [arb1]
+        let fact1 = Factura arb0
+        
+        let arb5 = Arb v3 []
+        let arb4 = Arb v2 [arb5]
+        let arb3 = Arb v1 [arb4]
+        let fact2 = Factura arb3
 
         -- let fact3 = (fusion2Facturas fact1 fact2)
 
 
-        print ("-------------------------------APARTADO C----------------------------")
+        print ("-------------------------------APARTADO G----------------------------")
         -- Tests
         print ("Venta1 test precio = " ++ show (precioVenta v1))
-        print ("Factura1 test precio = " ++ show (precioFactura precioFacturaux fact1))
-        -- print ("Fusion 2 facturas: " ++ show (fusion2Facturas fact1 fact2))
-        -- print("Precio total de un articulo en una factura: " ++ show (precArtFact precArtFactaux a1 fact3))
+        print ("Factura1 test precio = " ++ show (precioFactura fact1))
+        print ("Fusion 2 facturas: " ++ show (fusion2Facturas fact1 fact2))
+        print("Precio total de un articulo en una factura: " ++ show (precArtFact  a1 fact1))
 
         -- -- Tests de conversion a cadenas
         -- print("")

@@ -34,6 +34,9 @@ library
       ApartadoC.ApartadoC
       ApartadoD.ApartadoD
       ApartadoE.ApartadoE
+      ApartadoF.ApartadoF
+      ApartadoG.ApartadoG
+      ApartadoH.ApartadoH
   default-language: Haskell2010
 
 executable p1b-exe

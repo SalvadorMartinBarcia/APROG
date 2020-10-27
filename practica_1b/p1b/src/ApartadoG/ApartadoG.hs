@@ -78,14 +78,14 @@ module ApartadoG.ApartadoG where
     -- -- búsqueda en una factura de las ventas relativas a un artículo
     busquedaDeVentas1 :: Factura -> Articulo -> Factura
     busquedaDeVentas1 x art = Factura (creaArbol (busquedaDeVentas1aux art (getVenta (ventas x)) (getArbol (ventas x))))
-        where   busquedaDeVentas1aux art v [] =     if (nid (articulo v)) == (nid art) then
+        where   busquedaDeVentas1aux art1 v [] =     if (nid (articulo v)) == (nid art1) then
                                                         [v]
                                                     else
                                                         []
-                busquedaDeVentas1aux art v [a2] =   if (nid (articulo v)) == (nid art) then
-                                                        v : busquedaDeVentas1aux art (getVenta a2) (getArbol a2)
+                busquedaDeVentas1aux art1 v [a2] =   if (nid (articulo v)) == (nid art1) then
+                                                        v : busquedaDeVentas1aux art1 (getVenta a2) (getArbol a2)
                                                     else
-                                                        busquedaDeVentas1aux art (getVenta a2) (getArbol a2)
+                                                        busquedaDeVentas1aux art1 (getVenta a2) (getArbol a2)
                 creaArbol [v] = Arb v []
                 creaArbol (v:vs) = Arb v [creaArbol vs]
 

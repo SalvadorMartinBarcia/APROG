@@ -75,6 +75,10 @@ module ApartadoG.ApartadoG where
     convCadenaFactura :: Factura -> [Char]
     convCadenaFactura x = show x
 
+    creaArbol :: [Venta] -> Arbol Venta
+    creaArbol [v] = Arb v []
+    creaArbol (v:vs) = Arb v [creaArbol vs]
+
     -- -- búsqueda en una factura de las ventas relativas a un artículo
     busquedaDeVentas1 :: Factura -> Articulo -> Factura
     busquedaDeVentas1 x art = Factura (creaArbol (busquedaDeVentas1aux art (getVenta (ventas x)) (getArbol (ventas x))))
@@ -86,44 +90,55 @@ module ApartadoG.ApartadoG where
                                                         v : busquedaDeVentas1aux art1 (getVenta a2) (getArbol a2)
                                                     else
                                                         busquedaDeVentas1aux art1 (getVenta a2) (getArbol a2)
-                creaArbol [v] = Arb v []
-                creaArbol (v:vs) = Arb v [creaArbol vs]
-
-    --busquedaDeVentas1 x art = Factura [a | a <- ventas x, (nid (articulo a)) == (nid art)]
-
-    -- -- función auxiliar que se puede pasar como parametro a busquedaDeVentas2
-    -- busquedaDeVentas2aux :: Factura -> [Articulo] -> Factura
-    -- busquedaDeVentas2aux factura [y] = (busquedaDeVentas1 factura y)
-    -- busquedaDeVentas2aux factura (y:ys) = fusion2Facturas (busquedaDeVentas1 factura y) (busquedaDeVentas2aux factura ys)
     
-    -- -- búsqueda en una factura de las ventas relativas a una lista de artículos
-    -- busquedaDeVentas2 :: (Factura -> [Articulo] -> Factura) -> Factura -> [Articulo] -> Factura
-    -- busquedaDeVentas2 func x art = func x art
+    -- búsqueda en una factura de las ventas relativas a una lista de artículos
+    busquedaDeVentas2 :: Factura -> [Articulo] -> Factura
+    busquedaDeVentas2 fact art = busquedaDeVentas2aux fact art
+        where   busquedaDeVentas2aux f1 [a] = busquedaDeVentas1 f1 a
+                busquedaDeVentas2aux f1 (a:as) = fusion2Facturas (busquedaDeVentas1 f1 a) (busquedaDeVentas2aux f1 as)
 
-    -- -- eliminación en una factura de las ventas relativas a un determinado artículo
-    -- elim1 :: Factura -> Articulo -> Factura
-    -- elim1 fact art = Factura [ a | a <- ventas fact, (nid (articulo a)) /= (nid art)]
+    -- eliminación en una factura de las ventas relativas a un determinado artículo
+    elim1 :: Factura -> Articulo -> Factura
+    elim1 fact art = Factura (creaArbol (elim1Aux (getVenta (ventas fact)) (getArbol (ventas fact)) art))
+        where   elim1Aux v [] art2 =     if (nid (articulo v)) == (nid art2) then
+                                            []
+                                        else
+                                            [v]
+                elim1Aux v [v2] art2 =   if (nid (articulo v)) == (nid art2) then
+                                            elim1Aux (getVenta v2) (getArbol v2) art2
+                                        else
+                                            v : elim1Aux (getVenta v2) (getArbol v2) art2
     
-    -- -- eliminación en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada
-    -- elim2 :: Factura -> Int -> Factura
-    -- elim2 fact c = Factura [ a | a <- ventas fact, cantidadVenta a >= c]
-    
+    -- eliminación en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada
+    elim2 :: Factura -> Int -> Factura
+    elim2 x cantidad2 = Factura (creaArbol (elim2aux (getVenta (ventas x)) (getArbol (ventas x)) cantidad2))
+        where   elim2aux v [] cant =    if (cantidadVenta v) >= cant then
+                                            [v]
+                                        else
+                                            []
+                elim2aux v [a] cant =   if (cantidadVenta v) >= cant then
+                                            v : elim2aux (getVenta a) (getArbol a) cant
+                                        else
+                                            elim2aux (getVenta a) (getArbol a) cant    
 
-    -- instance Eq Venta where
-    --     x == y = (nid (articulo x)) == (nid (articulo y))
-    --     x /= y = not (x == y)
+    instance Eq Venta where
+        x == y = (nid (articulo x)) == (nid (articulo y))
+        x /= y = not (x == y)
         
-    -- -- eliminar repeticiones de artículos en una factura
-    -- elim3 :: Factura -> Factura
-    -- elim3 fact = Factura (elim3aux [] (ventas fact))
-    --     where   elim3aux seen [] = seen
-    --             elim3aux seen (x:xs)    | elem x seen = elim3aux (unirAux seen seen x) xs
-    --                                     | otherwise = elim3aux (seen ++ [x]) xs
-    --             unirAux (y:ys) seen x = if (x /= y) then
-    --                                         unirAux ys seen x
-    --                                     else
-    --                                         (ventas (elim1 (Factura seen) (articulo x))) ++ [(Venta (articulo x) ((cantidadVenta x)+(cantidadVenta y)))]
-                                            
+    -- eliminar repeticiones de artículos en una factura
+    elim3 :: Factura -> Factura
+    elim3 fact = Factura (creaArbol (elim3aux [] (getVenta (ventas fact)) (getArbol (ventas fact))))
+        where   elim3aux seen v []      | elem v seen = unirAux seen seen v
+                                        | otherwise = seen ++ [v]
+                elim3aux seen v [a]     | elem v seen = elim3aux (unirAux seen seen v) (getVenta a) (getArbol a)
+                                        | otherwise = elim3aux (seen ++ [v]) (getVenta a) (getArbol a)
+                unirAux (y:ys) seen v1 = if (v1 /= y) then
+                                            unirAux ys seen v1
+                                        else
+                                            (elimSeen seen (articulo v1)) ++ [(Venta (articulo v1) ((cantidadVenta v1)+(cantidadVenta y)))]
+                elimSeen [] _ = []
+                elimSeen (x:xs) art | (nid (articulo x)) == (nid art) = elimSeen xs art
+                                    | otherwise = x : elimSeen xs art
 
     mainG :: IO ()
     mainG = do
@@ -171,31 +186,34 @@ module ApartadoG.ApartadoG where
         print("")
         print("TEST DE BUSQUEDAS")
         print ("Busqueda en una factura de las ventas relativas a un articulo: " ++ show (busquedaDeVentas1 fact3 a1))
-        -- print ("Busqueda en una factura de las ventas relativas a una lista de articulos: " ++ show (busquedaDeVentas2 busquedaDeVentas2aux fact3 [a2,a3]))
+        print ("Busqueda en una factura de las ventas relativas a una lista de articulos: " ++ show (busquedaDeVentas2 fact3 [a1,a2]))
 
-        -- -- Tests de eliminaciones
-        -- print("")
-        -- print("TEST DE ELIMINACIONES")
-        -- print("Eliminacion en una factura de las ventas relativas a un determinado articulo: "++show (elim1 fact3 a1))
-        -- print("Eliminacion en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada: "++show (elim2 fact3 2))
-        -- print("Simplificacion de facturas: "++show (elim3 fact3))
+        -- Tests de eliminaciones
+        print("")
+        print("TEST DE ELIMINACIONES")
+        print("Eliminacion en una factura de las ventas relativas a un determinado articulo: "++show (elim1 fact3 a1))
+        print("Eliminacion en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada: "++show (elim2 fact3 2))
+        print("Fact " ++ show (fact3))
+        print("Simplificacion de facturas: "++show (elim3 fact3))
         
         -- Resultado de la ejecución
+        -- "-------------------------------APARTADO G----------------------------"
         -- "Venta1 test precio = 3.1499999"
-        -- "Factura1 test precio = 8.15"
-        -- "Fusion 2 facturas: {Venta \"Coco\" 3, {VentaUnitaria \"Chocolate\", {Venta \"Platano\" 2, {VentaUnitaria \"Napolitana\", Venta \"Coco\" 3}"
-        -- "Precio total de un articulo en una factura: 6.2999997"
+        -- "Factura1 test precio = 6.2"
+        -- "Fusion 2 facturas: {Venta \"Coco\" 3, VentaUnitaria \"Chocolate\", VentaUnitaria \"Napolitana\", Venta \"Coco\" 3, VentaUnitaria \"Chocolate\", VentaUnitaria \"Napolitana\"}"
+        -- "Precio total de un articulo en una factura: 3.1499999"
         -- ""
         -- "TEST DE CONVERSION A CADENAS"
         -- "Conversion a cadena de articulo: \"Coco\""
         -- "Conversion a cadena de venta: Venta \"Coco\" 3"
-        -- "Conversion a cadena de factura: {Venta \"Coco\" 3, {VentaUnitaria \"Chocolate\", Venta \"Platano\" 2}"
+        -- "Conversion a cadena de factura: {Venta \"Coco\" 3, VentaUnitaria \"Chocolate\", VentaUnitaria \"Napolitana\"}"
         -- ""
         -- "TEST DE BUSQUEDAS"
         -- "Busqueda en una factura de las ventas relativas a un articulo: {Venta \"Coco\" 3, Venta \"Coco\" 3}"
-        -- "Busqueda en una factura de las ventas relativas a una lista de articulos: {VentaUnitaria \"Chocolate\", VentaUnitaria \"Napolitana\"}"
+        -- "Busqueda en una factura de las ventas relativas a una lista de articulos: {Venta \"Coco\" 3, Venta \"Coco\" 3, VentaUnitaria \"Chocolate\", VentaUnitaria \"Chocolate\"}"
         -- ""
         -- "TEST DE ELIMINACIONES"
-        -- "Eliminacion en una factura de las ventas relativas a un determinado articulo: {VentaUnitaria \"Chocolate\", {Venta \"Platano\" 2, VentaUnitaria \"Napolitana\"}"
-        -- "Eliminacion en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada: {Venta \"Coco\" 3, {Venta \"Platano\" 2, Venta \"Coco\" 3}"
-        -- "Simplificacion de facturas: {VentaUnitaria \"Chocolate\", {Venta \"Platano\" 2, {VentaUnitaria \"Napolitana\", Venta \"Coco\" 6}"
+        -- "Eliminacion en una factura de las ventas relativas a un determinado articulo: {VentaUnitaria \"Chocolate\", VentaUnitaria \"Napolitana\", VentaUnitaria \"Chocolate\", VentaUnitaria \"Napolitana\"}"   
+        -- "Eliminacion en una factura de las ventas de aquellas relativas a una cantidad menor que una determinada: {Venta \"Coco\" 3, Venta \"Coco\" 3}"
+        -- "Fact {Venta \"Coco\" 3, VentaUnitaria \"Chocolate\", VentaUnitaria \"Napolitana\", Venta \"Coco\" 3, VentaUnitaria \"Chocolate\", VentaUnitaria \"Napolitana\"}"
+        -- "Simplificacion de facturas: {Venta \"Coco\" 6, Venta \"Chocolate\" 2, Venta \"Napolitana\" 2}"

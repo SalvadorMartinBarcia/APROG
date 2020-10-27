@@ -1,6 +1,4 @@
 
-{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
-
 module ApartadoB.ApartadoB where
 
     data Factura = Factura {ventas :: [Venta]}

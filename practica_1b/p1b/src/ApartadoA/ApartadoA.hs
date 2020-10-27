@@ -1,6 +1,5 @@
 
 
-
 module ApartadoA.ApartadoA where
 
     type Factura = [Venta]

@@ -10,4 +10,4 @@ import ApartadoG.ApartadoG
 import ApartadoH.ApartadoH
 
 main :: IO ()
-main = mainG
+main = mainB

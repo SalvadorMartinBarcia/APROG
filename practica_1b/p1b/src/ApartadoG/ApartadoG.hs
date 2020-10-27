@@ -4,7 +4,7 @@
 module ApartadoG.ApartadoG where
                                         
     data Arbol a = Arb a [Arbol a]
-    data Factura = Factura {ventas :: [Arbol Venta]}
+    data Factura = Factura {ventas :: Arbol Venta}
     data Venta =    VentaUnitaria {articulo :: Articulo} | 
                     Venta {articulo :: Articulo, cantidad :: Int} |
                     (:+) {articulo :: Articulo, cantidad :: Int}
@@ -22,70 +22,72 @@ module ApartadoG.ApartadoG where
     precioVenta ((:+) x y) = precio x * (fromIntegral y)
     precioVenta (VentaUnitaria x) = precio x
     
-    getVenta :: [Arbol a] -> a
-    getVenta [(Arb a _)] = a
+    getVenta :: Arbol a -> a
+    getVenta (Arb a _) = a
 
-    getArbol :: [Arbol c] -> [Arbol c]
-    getArbol [(Arb _ b)] = b
+    getArbol :: Arbol c -> [Arbol c]
+    getArbol (Arb _ b) = b
 
-    -- precioFactura :: Factura -> Float
-    -- precioFactura x = precioFacturaux (getVenta (ventas x)) (getArbol (ventas x))
-    --     where   precioFacturaux v [] = precioVenta v
-    --             precioFacturaux v [x1] = precioVenta v + precioFacturaux (getVenta x1) (getArbol x1)
+    precioFactura :: Factura -> Float
+    precioFactura x = precioFacturaux (getVenta (ventas x)) (getArbol (ventas x))
+        where   precioFacturaux v [] = precioVenta v
+                precioFacturaux v [x1] = precioVenta v + precioFacturaux (getVenta x1) (getArbol x1)
     
 
-    -- -- fusión de 2 facturas
-    -- fusion2Facturas :: Factura -> Factura -> Factura
-    -- fusion2Facturas x y = Factura (fusion2Facturasaux (getVenta (ventas x)) (getArbol (ventas x)) (ventas y))
-    --     where   fusion2Facturasaux vx [] y = Arb vx [y]
-    --             fusion2Facturasaux vx [ax] y = Arb vx [(fusion2Facturasaux (getVenta ax) (getArbol ax) y)]
+    -- fusión de 2 facturas
+    fusion2Facturas :: Factura -> Factura -> Factura
+    fusion2Facturas x y = Factura (fusion2Facturasaux (getVenta (ventas x)) (getArbol (ventas x)) (ventas y))
+        where   fusion2Facturasaux vx [] y1 = Arb vx [y1]
+                fusion2Facturasaux vx [ax] y1 = Arb vx [(fusion2Facturasaux (getVenta ax) (getArbol ax) y1)]
 
-    -- -- precio total de un artículo en una factura
-    -- precArtFact :: Articulo -> Factura -> Float
-    -- precArtFact art x = precArtFactaux art (getVenta (ventas x)) (getArbol (ventas x))
-    --     where   precArtFactaux  art1 v [] =     if nid art1 == (nid (articulo v)) then
-    --                                                 precioVenta v 
-    --                                             else 0
-    --             precArtFactaux  art1 v [ay] =   if nid art1 == (nid (articulo v)) then
-    --                                                 precioVenta v + (precArtFactaux art1 (getVenta ay) (getArbol ay))
-    --                                             else 
-    --                                                 precArtFactaux art1 (getVenta ay) (getArbol ay)
+    -- precio total de un artículo en una factura
+    precArtFact :: Articulo -> Factura -> Float
+    precArtFact art x = precArtFactaux art (getVenta (ventas x)) (getArbol (ventas x))
+        where   precArtFactaux  art1 v [] =     if nid art1 == (nid (articulo v)) then
+                                                    precioVenta v 
+                                                else 0
+                precArtFactaux  art1 v [ay] =   if nid art1 == (nid (articulo v)) then
+                                                    precioVenta v + (precArtFactaux art1 (getVenta ay) (getArbol ay))
+                                                else 
+                                                    precArtFactaux art1 (getVenta ay) (getArbol ay)
 
-    -- -- conversión a cadena de un artículo
-    -- instance Show Articulo where
-    --     show x = show (nombre x)
+    -- conversión a cadena de un artículo
+    instance Show Articulo where
+        show x = show (nombre x)
     
-    -- convCadenaArticulo :: Articulo -> [Char]
-    -- convCadenaArticulo x = show x
+    convCadenaArticulo :: Articulo -> [Char]
+    convCadenaArticulo x = show x
     
-    -- -- conversión a cadena de una venta
-    -- instance Show Venta where
-    --     show (VentaUnitaria x) = "VentaUnitaria " ++ show x
-    --     show (Venta x y) = "Venta " ++ show x++" " ++ show y
-    --     show ((:+) x y) = "Venta " ++ show x ++ " " ++ show y
+    -- conversión a cadena de una venta
+    instance Show Venta where
+        show (VentaUnitaria x) = "VentaUnitaria " ++ show x
+        show (Venta x y) = "Venta " ++ show x++" " ++ show y
+        show ((:+) x y) = "Venta " ++ show x ++ " " ++ show y
     
-    -- convCadenaVenta :: Venta -> [Char]
-    -- convCadenaVenta x = show x
+    convCadenaVenta :: Venta -> [Char]
+    convCadenaVenta x = show x
 
-    -- instance Show Factura where
-    --     show x = "{" ++ imp (getVenta (ventas x)) (getArbol (ventas x))
-    --         where   imp v [] = show v ++ "}"
-    --                 imp v [a] = show v ++ ", " ++ imp (getVenta a) (getArbol a)
+    instance Show Factura where
+        show x = "{" ++ imp (getVenta (ventas x)) (getArbol (ventas x))
+            where   imp v [] = show v ++ "}"
+                    imp v [a] = show v ++ ", " ++ imp (getVenta a) (getArbol a)
     
-    -- convCadenaFactura :: Factura -> [Char]
-    -- convCadenaFactura x = show x
+    convCadenaFactura :: Factura -> [Char]
+    convCadenaFactura x = show x
 
-    -- búsqueda en una factura de las ventas relativas a un artículo
+    -- -- búsqueda en una factura de las ventas relativas a un artículo
     busquedaDeVentas1 :: Factura -> Articulo -> Factura
-    busquedaDeVentas1 x art = Factura [(busquedaDeVentas1aux art (getVenta (ventas x)) (getArbol (ventas x)))]
+    busquedaDeVentas1 x art = Factura (creaArbol (busquedaDeVentas1aux art (getVenta (ventas x)) (getArbol (ventas x))))
         where   busquedaDeVentas1aux art v [] =     if (nid (articulo v)) == (nid art) then
-                                                        Arb v []
+                                                        [v]
                                                     else
                                                         []
-                busquedaDeVentas1aux art v a2 =   if (nid (articulo v)) == (nid art) then
-                                                        Arb v [busquedaDeVentas1aux art (getVenta a2) (getArbol a2)]
+                busquedaDeVentas1aux art v [a2] =   if (nid (articulo v)) == (nid art) then
+                                                        v : busquedaDeVentas1aux art (getVenta a2) (getArbol a2)
                                                     else
                                                         busquedaDeVentas1aux art (getVenta a2) (getArbol a2)
+                creaArbol [v] = Arb v []
+                creaArbol (v:vs) = Arb v [creaArbol vs]
 
     --busquedaDeVentas1 x art = Factura [a | a <- ventas x, (nid (articulo a)) == (nid art)]
 
@@ -148,7 +150,7 @@ module ApartadoG.ApartadoG where
         let arb3 = Arb v1 [arb4]
         let fact2 = Factura arb3
 
-        -- let fact3 = (fusion2Facturas fact1 fact2)
+        let fact3 = (fusion2Facturas fact1 fact2)
 
 
         print ("-------------------------------APARTADO G----------------------------")
@@ -158,17 +160,17 @@ module ApartadoG.ApartadoG where
         print ("Fusion 2 facturas: " ++ show (fusion2Facturas fact1 fact2))
         print("Precio total de un articulo en una factura: " ++ show (precArtFact  a1 fact1))
 
-        -- -- Tests de conversion a cadenas
-        -- print("")
-        -- print("TEST DE CONVERSION A CADENAS")
-        -- print ("Conversion a cadena de articulo: " ++ convCadenaArticulo a1)
-        -- print ("Conversion a cadena de venta: " ++ convCadenaVenta v1)
-        -- print ("Conversion a cadena de factura: " ++ convCadenaFactura fact1)
+        -- Tests de conversion a cadenas
+        print("")
+        print("TEST DE CONVERSION A CADENAS")
+        print ("Conversion a cadena de articulo: " ++ convCadenaArticulo a1)
+        print ("Conversion a cadena de venta: " ++ convCadenaVenta v1)
+        print ("Conversion a cadena de factura: " ++ convCadenaFactura fact1)
 
-        -- -- Tests de busquedas
-        -- print("")
-        -- print("TEST DE BUSQUEDAS")
-        -- print ("Busqueda en una factura de las ventas relativas a un articulo: " ++ show (busquedaDeVentas1 fact3 a1))
+        -- Tests de busquedas
+        print("")
+        print("TEST DE BUSQUEDAS")
+        print ("Busqueda en una factura de las ventas relativas a un articulo: " ++ show (busquedaDeVentas1 fact3 a1))
         -- print ("Busqueda en una factura de las ventas relativas a una lista de articulos: " ++ show (busquedaDeVentas2 busquedaDeVentas2aux fact3 [a2,a3]))
 
         -- -- Tests de eliminaciones

@@ -2,11 +2,11 @@
 --
 -- see: https://github.com/sol/hpack
 
-name:           p1b
+name:           p2a
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/p1b#readme>
-homepage:       https://github.com/githubuser/p1b#readme
-bug-reports:    https://github.com/githubuser/p1b/issues
+description:    Please see the README on GitHub at <https://github.com/githubuser/p2a#readme>
+homepage:       https://github.com/githubuser/p2a#readme
+bug-reports:    https://github.com/githubuser/p2a/issues
 author:         Author name here
 maintainer:     example@example.com
 copyright:      2020 Author name here
@@ -21,7 +21,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/p1b
+  location: https://github.com/githubuser/p2a
 
 library
   hs-source-dirs:
@@ -29,27 +29,20 @@ library
   build-depends:
       base >= 4.7 && < 5
   exposed-modules:
-      ApartadoA.ApartadoA
-      ApartadoB.ApartadoB
-      ApartadoC.ApartadoC
-      ApartadoD.ApartadoD
-      ApartadoE.ApartadoE
-      ApartadoF.ApartadoF
-      ApartadoG.ApartadoG
-      ApartadoH.ApartadoH
+      Lib
   default-language: Haskell2010
 
-executable p1b-exe
+executable p2a-exe
   main-is: Main.hs
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >= 4.7 && < 5
-    , p1b
+    , p2a
   default-language: Haskell2010
 
-test-suite p1b-test
+test-suite p2a-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   hs-source-dirs:
@@ -57,5 +50,5 @@ test-suite p1b-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >= 4.7 && < 5
-    , p1b
+    , p2a
   default-language: Haskell2010

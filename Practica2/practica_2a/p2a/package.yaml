@@ -1,6 +1,6 @@
-name:                factoriales
+name:                p2a
 version:             0.1.0.0
-github:              "githubuser/factoriales"
+github:              "githubuser/p2a"
 license:             BSD3
 author:              "Author name here"
 maintainer:          "example@example.com"
@@ -17,17 +17,16 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/factoriales#readme>
+description:         Please see the README on GitHub at <https://github.com/githubuser/p2a#readme>
 
 dependencies:
 - base >= 4.7 && < 5
-- QuickCheck
 
 library:
   source-dirs: src
 
 executables:
-  factoriales-exe:
+  p2a-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -35,10 +34,10 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - factoriales
+    - p2a
 
 tests:
-  factoriales-test:
+  p2a-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -46,4 +45,4 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - factoriales
+    - p2a

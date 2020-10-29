@@ -29,7 +29,7 @@ library
   build-depends:
       base >= 4.7 && < 5
   exposed-modules:
-      Lib
+      ApartadoA.ApartadoA
   default-language: Haskell2010
 
 executable p2a-exe

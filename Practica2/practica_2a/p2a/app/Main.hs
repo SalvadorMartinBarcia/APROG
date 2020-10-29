@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import ApartadoA.ApartadoA
 
 main :: IO ()
-main = someFunc
+main = print (sol1)

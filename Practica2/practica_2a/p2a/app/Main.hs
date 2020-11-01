@@ -3,4 +3,6 @@ module Main where
 import ApartadoA.ApartadoA
 
 main :: IO ()
-main = print (sol1)
+main = do 
+    print (sol1)
+    print (sol2)

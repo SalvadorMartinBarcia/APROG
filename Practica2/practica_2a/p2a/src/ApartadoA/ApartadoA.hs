@@ -19,6 +19,7 @@ module ApartadoA.ApartadoA where
     frAndalucia Se = [Hu,Ca,Ma,Co]
     
     data Mapa = Atlas [Provincia] Frontera
+
     andalucia :: Mapa
     andalucia = Atlas [Al .. Se] frAndalucia
 

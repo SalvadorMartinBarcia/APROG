@@ -36,5 +36,6 @@ module ApartadoA.ApartadoA where
     
     solucionColorear:: (Mapa,[Color]) -> [(Provincia,Color)]
     solucionColorear = head . coloreados
+
     sol1 = solucionColorear (andalucia, [Rojo .. Azul]) -- encuentra una solucion
     sol2 = solucionColorear (andalucia, [Rojo,Verde]) -- sin solución

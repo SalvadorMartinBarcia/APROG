@@ -5,32 +5,39 @@ module ApartadoB.ApartadoB where
     
     data Provincia = Rect {coordenadaXSup :: Integer, coordenadaYSup :: Integer, 
                             coordenadaXInf :: Integer, coordenadaYInf :: Integer,
-                            nombre :: String}
+                            nombre :: Char}
                             
-    
     data Color = Rojo | Verde | Azul deriving (Show,Enum,Eq)
     
-    
     type Provincias = [Provincia]
+    
     type Mosaico = [String]
+
+    type Frontera = [(Provincia, [Provincia])]
+
+    data Mapa = Atlas [Provincia] Frontera
+
 
     matches :: Eq a => [a] -> [a] -> Int
     matches xs ys = length (intersect xs ys)
 
     prov1, prov2, prov3, prov4, prov5, prov6, prov7, prov8 :: Provincia
-    prov1 = Rect 1 0 4 2 "H"---------
-    prov2 = Rect 1 2 4 5 "S"---------
-    prov3 = Rect 0 5 4 7 "O"---------
-    prov4 = Rect 1 7 5 11 "J"--------
-    prov5 = Rect 4 3 7 5 "C"---------
-    prov6 = Rect 5 5 7 11 "M"--------
-    prov7 = Rect 3 11 6 13 "G"-------
-    prov8 = Rect 5 13 7 15 "A"-------
+    prov1 = Rect 1 0 4 2 'H'--------- Huelva
+    prov2 = Rect 1 2 4 5 'S'--------- Sevilla
+    prov3 = Rect 0 5 4 7 'O'--------- cOrdoba
+    prov4 = Rect 1 7 5 11 'J'-------- Jaen
+    prov5 = Rect 4 3 7 5 'C'--------- Cadiz
+    prov6 = Rect 5 5 7 11 'M'-------- Malaga
+    prov7 = Rect 3 11 6 13 'G'------- Granada
+    prov8 = Rect 5 13 7 15 'A'------- Almeria
 
+    provs :: Provincias
+    provs = [prov1,prov2,prov3,prov4,prov5,prov6,prov7,prov8]
+    
     {-
      0123456789012345y
     0......oo........
-    1hhhsssoojjjj....
+    1hhhsssoojjjj.... 
     2hhhsssoojjjj...
     3hhhsssoojjjjgg..
     4hhhsssoojjjjgg..
@@ -40,20 +47,14 @@ module ApartadoB.ApartadoB where
     x
     -}
 
-    -- maximoX :: Int
-    -- maximoX=8
-    -- maximoY :: Int
-    -- maximoY=16
-
-
     encontrarFronteras :: [Provincia] -> [(Provincia, [Provincia])]
     encontrarFronteras [] = []
-    encontrarFronteras provs = encontrarFronterasAux1 provs provs
+    encontrarFronteras provs0 = encontrarFronterasAux1 provs0 provs0
         where
             encontrarFronterasAux1 [] _ = []
             encontrarFronterasAux1 (x:xs) provs1 = encontrarFronterasAux2 x provs1 : encontrarFronterasAux1 xs provs1
             encontrarFronterasAux2 x1 provs2 = (x1, encontrarFronterasAux3 x1 provs2)
-            encontrarFronterasAux3 a [] = []
+            encontrarFronterasAux3 _ [] = []
             encontrarFronterasAux3 a (b:bs) = do 
                                             let l1 = [(coordenadaYSup a) .. (coordenadaYInf a)]
                                             let l1' = [(coordenadaYSup b) .. (coordenadaYInf b)]
@@ -64,21 +65,41 @@ module ApartadoB.ApartadoB where
                                             else
                                                 encontrarFronterasAux3 a bs
 
-    provs :: Provincias
-    provs = [prov1,prov2,prov3,prov4,prov5,prov6,prov7,prov8]
+    andalucia :: Mapa
+    andalucia = Atlas provs (encontrarFronteras provs)
 
-    -- mosaicoInicial :: Mosaico
-    -- mosaicoInicial = replicate maximoX (replicate maximoY '.')
+    findKey :: (Eq k) => k -> [(k,v)] -> v  
+    findKey key xs = snd . head . filter (\(k,_) -> key == k) $ xs  
+
+    -- Colores de provincias vecinas para un coloreado
+    coloresFrontera :: Provincia->[(Provincia,Color)]->Frontera-> [Color]
+    coloresFrontera provincia coloreado frontera = [col | (prov,col)<- coloreado, elem prov (findKey provincia frontera)]
+
+    -- coloreados :: Frontera -> Colores -> [[(Provincia,Color)]]
+    coloreados :: (Mapa,[Color]) -> [[(Provincia,Color)]]
+    coloreados ((Atlas [] _), _) = [[]]
+    coloreados ((Atlas (prov:provs2) frontera), colores) = [(prov,color):coloreado' |
+                                        coloreado' <- coloreados ((Atlas provs2 frontera), colores)
+                                        , color <- colores \\ (coloresFrontera prov coloreado' frontera)]
+
+    solucionColorear:: (Mapa,[Color]) -> [(Provincia,Color)]
+    solucionColorear = head . coloreados
+
+    sol3 = solucionColorear (andalucia, [Rojo .. Azul]) -- encuentra una solucion
+    
+    
+    mosaicoInicial :: Mosaico
+    mosaicoInicial = replicate 8 (replicate 16 '.')
  
-    -- dibujarMosaico :: Mosaico -> IO ()
-    -- dibujarMosaico = putStr . unlines
+    dibujarMosaico :: Mosaico -> IO ()
+    dibujarMosaico = putStr . unlines
 
     -- incluirProvincias :: Mosaico -> Provincias -> Mosaico
     -- incluirProvincias= foldl incluirProvincia
 
     -- incluirProvincia :: Mosaico -> Provincia -> Mosaico
-    -- incluirProvincia mosaico provincia  = map fila [1..maximoX]
-    --     where   fila n = map (letra n) [1..maximoY]
+    -- incluirProvincia mosaico provincia  = map fila [1..8]
+    --     where   fila n = map (letra n) [1..16]
     --             (letra n) m | dentroRectangulo n m provincia = nombre provincia
     --                         | otherwise = mosaico !! (n-1) !! (m-1)
 
@@ -88,34 +109,15 @@ module ApartadoB.ApartadoB where
     --     && (bordeY cuadrado <= m) && (m<bordeY cuadrado + ancho cuadrado)
 
     instance Show Provincia where
-        show x = nombre x
+        show x = [nombre x]
+
+    instance Eq Provincia where
+        (==) x y = (nombre x) == (nombre y)
 
     mainB = do 
-        print(encontrarFronteras provs)
+        print (sol3)
+        dibujarMosaico mosaicoInicial
 
     -- Equivalente:         dibujarMosaico mosaico = (putStr . unlines) mosaico
     -- Equivalente:         dibujarMosaico mosaico = putStr . unlines $ mosaico
 
-    -- -- Colores de provincias vecinas para un coloreado
-    -- coloresFrontera :: Provincia->[(Provincia,Color)]->Frontera-> [Color]
-    -- coloresFrontera provincia coloreado frontera = [col | (prov,col)<- coloreado, elem prov (frontera provincia)]
-    
-    -- -- Posibles coloreados para un mapa y una lista de colores
-    -- coloreados :: (Mapa,[Color]) -> [[(Provincia,Color)]]
-    -- coloreados ((Atlas [] _), _) = [[]]
-    -- coloreados ((Atlas (prov:provs) frontera), colores) = [(prov,color):coloreado' |
-    --                                     coloreado' <- coloreados ((Atlas provs frontera), colores)
-    --                                     , color <- colores \\ (coloresFrontera prov coloreado' frontera)]
-    
-    -- solucionColorear:: (Mapa,[Color]) -> [(Provincia,Color)]
-    -- solucionColorear = head . coloreados
-    -- sol1 = solucionColorear (andalucia, [Rojo .. Azul]) -- encuentra una solucion
-    -- sol2 = solucionColorear (andalucia, [Rojo,Verde]) -- sin solución
-
-    {-
-    Dudas:
-        - b) sacar las fronteras desde la lista provs
-        de provincias(mapa)
-        - apartado c: suponemos que no se pueden predefinir las fronteras
-        
-    -}

@@ -4,4 +4,6 @@ import ApartadoA.ApartadoA
 import ApartadoB.ApartadoB
 
 main :: IO ()
-main = mainB
+main = do
+    print (sol1)
+    mainB

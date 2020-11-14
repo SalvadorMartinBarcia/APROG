@@ -1,5 +1,5 @@
 
-module ApartadoB.ApartadoB where
+module ApartadoC.ApartadoC where
     
     import Data.List
     
@@ -37,8 +37,11 @@ module ApartadoB.ApartadoB where
     prov7 = Rect 11 3 13 6 "Granada"
     prov8 = Rect 13 5 15 7 "Almeria"
 
+    -- provs :: Provincias
+    -- provs = [prov1,prov2,prov3,prov4,prov5,prov6,prov7,prov8]
+
     provs :: Provincias
-    provs = [prov1,prov2,prov3,prov4,prov5,prov6,prov7,prov8]
+    provs = [prov1,prov2]
     
     {-
      0123456789012345x
@@ -82,9 +85,29 @@ module ApartadoB.ApartadoB where
                                             else
                                                 encontrarFronterasAux3 a bs
 
-    andalucia :: Mapa
-    andalucia = Atlas provs (encontrarFronteras provs)
+    andalucia :: Either String Mapa
+    andalucia = if (cuadradosSolapados provs) then
+                    "ERROR - Provincias solapadas"
+                else
+                    Atlas provs (encontrarFronteras provs)
 
+    cuadradosSolapados :: Provincias -> Bool
+    cuadradosSolapados provsx = cuadradosSolapadosAux provsx provs
+        where   cuadradosSolapadosAux [x] provs1 = funAux x provs1
+                cuadradosSolapadosAux (x:xs) provs1 = funAux x provs1 || cuadradosSolapadosAux xs provs1
+                funAux x [y] = comp x y
+                funAux x (y:ys) = comp x y || funAux x ys
+                comp x y = 
+                    if nombre x == nombre y then
+                        False
+                    else 
+                        do
+                        let lx = creaL (coordenadaXSup x + 1) (coordenadaXInf x - 1) (coordenadaYSup x + 1) (coordenadaYInf x - 1)
+                        let ly = creaL (coordenadaXSup y) (coordenadaXInf y) (coordenadaYSup y) (coordenadaYInf y)
+                        matches lx ly > 0
+                creaL xSup xInf ySup yInf = [(x,y) | x <- [xSup..xInf], y <- [ySup..yInf]]
+    
+    
     findKey :: (Eq k) => k -> [(k,v)] -> v  
     findKey key xs = snd . head . filter (\(k,_) -> key == k) $ xs  
 
@@ -129,15 +152,16 @@ module ApartadoB.ApartadoB where
     instance Eq Provincia where
         (==) x y = (nombre x) == (nombre y)
 
-    mainB :: IO()
-    mainB = do
+    mainC :: IO()
+    mainC = do
         
-        let sol = solucionColorear (andalucia, [Rojo .. Azul])
-        print (sol)
-        dibujarMosaico mosaicoInicial
-        mostrarSeparador
-        let mosaicoSol = incluirProvincias mosaicoInicial sol
-        dibujarMosaico mosaicoSol
+        print (cuadradosSolapados provs)
+        -- let sol = solucionColorear (andalucia, [Rojo .. Azul])
+        -- print (sol)
+        -- dibujarMosaico mosaicoInicial
+        -- mostrarSeparador
+        -- let mosaicoSol = incluirProvincias mosaicoInicial sol
+        -- dibujarMosaico mosaicoSol
         
 
         ----------------------Ejecucion ApartadoB------------------------------------------

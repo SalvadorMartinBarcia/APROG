@@ -1,13 +1,21 @@
 
-module ApartadoC.ApartadoC where
+module ApartadoE.ApartadoE where
     
     import Data.List
     import Data.Either
     
-    data Provincia = Rect {coordenadaXSup :: Int, coordenadaYSup :: Int, 
-                            coordenadaXInf :: Int, coordenadaYInf :: Int,
-                            nombre :: String}
-                            
+    data Provincia = Rect Int Int Int Int String deriving (Show, Read)
+
+    coordenadaXSup, coordenadaYSup, coordenadaXInf, coordenadaYInf :: Provincia -> Int
+    coordenadaXSup (Rect x _ _ _ _) = x
+    coordenadaYSup (Rect _ x _ _ _) = x
+    coordenadaXInf (Rect _ _ x _ _) = x
+    coordenadaYInf (Rect _ _ _ x _) = x
+    
+    nombre :: Provincia -> String
+    nombre (Rect _ _ _ _ x) = x
+    
+
     data Color = Rojo | Verde | Azul deriving (Show,Enum,Eq)
     
     type Provincias = [Provincia]
@@ -18,17 +26,18 @@ module ApartadoC.ApartadoC where
 
     data Mapa = Atlas [Provincia] Frontera
 
+    colores :: [Color]
+    colores = [Rojo .. Azul]
+
     showColor :: Color -> Char
     showColor Rojo = 'r'
     showColor Azul = 'a'
     showColor Verde = 'v'
-    
-
 
     matches :: Eq a => [a] -> [a] -> Int
     matches xs ys = length (intersect xs ys)
 
-    prov1, prov2, prov3, prov4, prov5, prov6, prov7, prov8, provExtra :: Provincia
+    prov1, prov2, prov3, prov4, prov5, prov6, prov7, prov8 :: Provincia
     prov1 = Rect 0 1 2 4 "Huelva"
     prov2 = Rect 2 1 5 4 "Sevilla"
     prov3 = Rect 5 0 7 4 "Cordoba"
@@ -37,13 +46,9 @@ module ApartadoC.ApartadoC where
     prov6 = Rect 5 5 11 7 "Malaga"
     prov7 = Rect 11 3 13 6 "Granada"
     prov8 = Rect 13 5 15 7 "Almeria"
-    provExtra = Rect 1 1 5 4 "Sevilla"
 
     provs :: Provincias
     provs = [prov1,prov2,prov3,prov4,prov5,prov6,prov7,prov8]
-
-    provsSolapas :: Provincias
-    provsSolapas = [prov1, provExtra]
     
     {-
      0123456789012345x
@@ -87,23 +92,13 @@ module ApartadoC.ApartadoC where
                                             else
                                                 encontrarFronterasAux3 a bs
 
-    -- andalucia :: Either String Mosaico
-    -- andalucia = if (cuadradosSolapados provs) then
-    --                 Left "ERROR - Provincias solapadas"
-    --             else
-    --                 --Right (Atlas provs (encontrarFronteras provs))
-    --                 Right(do
-    --                         let sol = solucionColorear (Atlas provs (encontrarFronteras provs), [Rojo .. Azul])
-    --                         incluirProvincias mosaicoInicial sol
-    --                     )
-    
-    andalucia :: Provincias -> Either String Mosaico
-    andalucia provincias = if (cuadradosSolapados provincias) then
+
+    andalucia :: Provincias -> [Color] -> Either String Mosaico
+    andalucia provincias colors = if (cuadradosSolapados provincias) then
                     Left "ERROR - Provincias solapadas"
                 else
-                    --Right (Atlas provs (encontrarFronteras provs))
                     Right(do
-                            let sol = solucionColorear (Atlas provincias (encontrarFronteras provincias), [Rojo .. Azul])
+                            let sol = solucionColorear (Atlas provincias (encontrarFronteras provincias), colors)
                             incluirProvincias mosaicoInicial sol
                         )
 
@@ -132,9 +127,9 @@ module ApartadoC.ApartadoC where
 
     coloreados :: (Mapa,[Color]) -> [[(Provincia,Color)]]
     coloreados ((Atlas [] _), _) = [[]]
-    coloreados ((Atlas (prov:provs2) frontera), colores) = [(prov,color):coloreado' |
-                                        coloreado' <- coloreados ((Atlas provs2 frontera), colores)
-                                        , color <- colores \\ (coloresFrontera prov coloreado' frontera)]
+    coloreados ((Atlas (prov:provs2) frontera), colores') = [(prov,color):coloreado' |
+                                        coloreado' <- coloreados ((Atlas provs2 frontera), colores')
+                                        , color <- colores' \\ (coloresFrontera prov coloreado' frontera)]
 
     solucionColorear:: (Mapa,[Color]) -> [(Provincia,Color)]
     solucionColorear = head . coloreados    
@@ -163,28 +158,64 @@ module ApartadoC.ApartadoC where
     mostrarSeparador :: IO ()
     mostrarSeparador = putStrLn $ replicate 20 '-'
 
-    instance Show Provincia where
-        show x = nombre x
-
     instance Eq Provincia where
         (==) x y = (nombre x) == (nombre y)
+    
 
-    mainC :: IO()
-    mainC = do
-        
-        --dibujarMosaico andalucia
+    introducirRectangulos :: [Provincia] -> IO ()
+    introducirRectangulos p = introducirProvinciaAux p
+        where introducirProvinciaAux p2 = do 
+                                                putStrLn "Introduce una provincia:"
+                                                provincia <- getLine
+                                                let provinciaNueva = [(read provincia)]
+                                                let aux = (andalucia (p2 ++ provinciaNueva) [Rojo .. Azul])
+                                                
+                                                if isLeft (aux) then
+                                                    --Error
+                                                    dibujarMosaico aux
+                                                else 
+                                                    do
+                                                        putStrLn "¿Quieres introducir mas provincias?(s/n):"
+                                                        opcionSN <- getLine
+                                                        if opcionSN == "s" then
+                                                            introducirProvinciaAux (p2 ++ provinciaNueva)
+                                                        else
+                                                            introducirColores (p2 ++ provinciaNueva)
+    introducirColores :: [Provincia] -> IO ()
+    introducirColores provs' = do 
+                                    putStr "Colores disponibles: "
+                                    print (stringColores colores)
+                                    putStrLn "Elige la cantidad de colores:"
+                                    cant <- getLine
+                                    let cantidad = read cant
+                                    if cantidad > (length colores) || cantidad <= 0 then
+                                        do
+                                            print ("Numero de colores no disponible")
+                                            introducirColores provs'
+                                    else 
+                                        do
+                                            let colores' = take cantidad colores
+                                            dibujarMosaico (andalucia provs' colores')
+
+    printColor :: Color -> String
+    printColor Rojo = "Rojo"
+    printColor Verde = "Verde"
+    printColor Azul = "Azul"
+
+    stringColores :: [Color] -> String
+    stringColores [x] = printColor x
+    stringColores (x:xs) = (printColor x) ++ ", " ++ stringColores xs
+
+    mainE :: IO()
+    mainE = do
         print ("Solucion no solapada")
-        dibujarMosaico (andalucia provs)
+        dibujarMosaico (andalucia provs colores)
         mostrarSeparador
-        print ("Solucion solapada")
-        dibujarMosaico (andalucia provsSolapas)
 
-        -- if isLeft andalucia then
-        --     print andalucia
-        -- else 
-        --     dibujarMosaico andalucia
-        
-{-Dudas: 
-        - either con do
-        - como hacer que la comprobacion de si es string o mosaico (mapa antes) quede mas limpia
--}
+        putStrLn "\nQuieres introducir una o más provincias? (s/n)"
+        opcion <- getLine
+
+        if opcion == "s" then do
+            introducirRectangulos provs
+        else
+            introducirColores provs

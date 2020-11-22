@@ -16,7 +16,7 @@ module ApartadoD.ApartadoD where
     nombre (Rect _ _ _ _ x) = x
     
 
-    data Color = Rojo | Verde | Azul deriving (Show,Enum,Eq)
+    data Color = Rojo | Verde | Amarillo | Morado | Lila | Azul deriving (Show,Enum,Eq)
     
     type Provincias = [Provincia]
     
@@ -31,8 +31,11 @@ module ApartadoD.ApartadoD where
 
     showColor :: Color -> Char
     showColor Rojo = 'r'
-    showColor Azul = 'a'
     showColor Verde = 'v'
+    showColor Amarillo = 'a'
+    showColor Morado = 'm'
+    showColor Lila = 'l'
+    showColor Azul = 'v'
 
     matches :: Eq a => [a] -> [a] -> Int
     matches xs ys = length (intersect xs ys)
@@ -163,24 +166,25 @@ module ApartadoD.ApartadoD where
     
 
     introducirRectangulos :: [Provincia] -> IO ()
-    introducirRectangulos p = introducirProvinciaAux p
-        where introducirProvinciaAux p2 = do 
-                                                putStrLn "Introduce una provincia:"
-                                                provincia <- getLine
-                                                let provinciaNueva = [(read provincia)]
-                                                let aux = (andalucia (p2 ++ provinciaNueva) [Rojo .. Azul])
-                                                
-                                                if isLeft (aux) then
-                                                    --Error
-                                                    dibujarMosaico aux
-                                                else 
-                                                    do
-                                                        putStrLn "¿Quieres introducir mas provincias?(s/n):"
-                                                        opcionSN <- getLine
-                                                        if opcionSN == "s" then
-                                                            introducirProvinciaAux (p2 ++ provinciaNueva)
-                                                        else
-                                                            introducirColores (p2 ++ provinciaNueva)
+    introducirRectangulos p2 = do 
+                                    putStrLn "Introduce una provincia:"
+                                    provincia <- getLine
+                                    let provinciaNueva = [(read provincia)]
+                                    let aux = (andalucia (p2 ++ provinciaNueva) [Rojo .. Azul])
+                                    
+                                    if isLeft (aux) then
+                                        --Error
+                                        do
+                                            dibujarMosaico aux
+                                            introducirRectangulos p2
+                                    else 
+                                        do
+                                            putStrLn "¿Quieres introducir mas provincias?(s/n):"
+                                            opcionSN <- getLine
+                                            if opcionSN == "s" then
+                                                introducirRectangulos (p2 ++ provinciaNueva)
+                                            else
+                                                introducirColores (p2 ++ provinciaNueva)
     introducirColores :: [Provincia] -> IO ()
     introducirColores provs' = do 
                                     putStr "Colores disponibles: "
@@ -201,6 +205,9 @@ module ApartadoD.ApartadoD where
     printColor Rojo = "Rojo"
     printColor Verde = "Verde"
     printColor Azul = "Azul"
+    printColor Amarillo = "Amarillo"
+    printColor Lila = "Lila"
+    printColor Morado = "Morado"
 
     stringColores :: [Color] -> String
     stringColores [x] = printColor x
@@ -208,14 +215,16 @@ module ApartadoD.ApartadoD where
 
     mainD :: IO()
     mainD = do
-        print ("Solucion no solapada")
-        dibujarMosaico (andalucia provs colores)
-        mostrarSeparador
+        
+        print (cuadradosSolapados [prov1,prov1])
+        -- print ("Solucion no solapada")
+        -- dibujarMosaico (andalucia provs colores)
+        -- mostrarSeparador
 
-        putStrLn "\nQuieres introducir una o más provincias? (s/n)"
-        opcion <- getLine
+        -- putStrLn "\nQuieres introducir una o más provincias? (s/n)"
+        -- opcion <- getLine
 
-        if opcion == "s" then do
-            introducirRectangulos provs
-        else
-            introducirColores provs
+        -- if opcion == "s" then do
+        --     introducirRectangulos provs
+        -- else
+        --     introducirColores provs

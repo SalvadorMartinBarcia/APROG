@@ -33,6 +33,7 @@ library
       ApartadoB.ApartadoB
       ApartadoC.ApartadoC
       ApartadoD.ApartadoD
+      ApartadoE.ApartadoE
   default-language: Haskell2010
 
 executable p2a-exe

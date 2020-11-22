@@ -23,8 +23,6 @@ module ApartadoC.ApartadoC where
     showColor Azul = 'a'
     showColor Verde = 'v'
     
-
-
     matches :: Eq a => [a] -> [a] -> Int
     matches xs ys = length (intersect xs ys)
 
@@ -42,8 +40,8 @@ module ApartadoC.ApartadoC where
     provs :: Provincias
     provs = [prov1,prov2,prov3,prov4,prov5,prov6,prov7,prov8]
 
-    provsSolapas :: Provincias
-    provsSolapas = [prov1, provExtra]
+    provsSolapadas :: Provincias
+    provsSolapadas = [prov1, provExtra]
     
     {-
      0123456789012345x
@@ -86,22 +84,11 @@ module ApartadoC.ApartadoC where
                                                 b :encontrarFronterasAux3 a bs
                                             else
                                                 encontrarFronterasAux3 a bs
-
-    -- andalucia :: Either String Mosaico
-    -- andalucia = if (cuadradosSolapados provs) then
-    --                 Left "ERROR - Provincias solapadas"
-    --             else
-    --                 --Right (Atlas provs (encontrarFronteras provs))
-    --                 Right(do
-    --                         let sol = solucionColorear (Atlas provs (encontrarFronteras provs), [Rojo .. Azul])
-    --                         incluirProvincias mosaicoInicial sol
-    --                     )
     
     andalucia :: Provincias -> Either String Mosaico
     andalucia provincias = if (cuadradosSolapados provincias) then
                     Left "ERROR - Provincias solapadas"
                 else
-                    --Right (Atlas provs (encontrarFronteras provs))
                     Right(do
                             let sol = solucionColorear (Atlas provincias (encontrarFronteras provincias), [Rojo .. Azul])
                             incluirProvincias mosaicoInicial sol
@@ -114,7 +101,7 @@ module ApartadoC.ApartadoC where
                 funAux x [y] = comp x y
                 funAux x (y:ys) = comp x y || funAux x ys
                 comp x y = 
-                    if nombre x == nombre y then
+                    if x == y then
                         False
                     else 
                         do
@@ -171,20 +158,10 @@ module ApartadoC.ApartadoC where
 
     mainC :: IO()
     mainC = do
-        
-        --dibujarMosaico andalucia
+
         print ("Solucion no solapada")
         dibujarMosaico (andalucia provs)
         mostrarSeparador
         print ("Solucion solapada")
-        dibujarMosaico (andalucia provsSolapas)
+        dibujarMosaico (andalucia provsSolapadas)
 
-        -- if isLeft andalucia then
-        --     print andalucia
-        -- else 
-        --     dibujarMosaico andalucia
-        
-{-Dudas: 
-        - either con do
-        - como hacer que la comprobacion de si es string o mosaico (mapa antes) quede mas limpia
--}

@@ -16,39 +16,69 @@ module ApartadoE.ApartadoE where
     nombre (Rect _ _ _ _ x) = x
     
 
-    data Color = Rojo | Verde | Azul deriving (Show,Enum,Eq)
+    data Color = Rojo | Verde | Amarillo | Morado | Lila | Azul deriving (Show,Enum,Eq)
     
-    type Provincias = [Provincia]
+    data Region = Reg [Provincia] String deriving (Show, Read)
+
+    listaReg :: Region -> [Provincia]
+    listaReg (Reg x _) = x
+
+    nombreReg :: Region -> String
+    nombreReg (Reg _ x) = x
     
+    type Regiones = [Region]
+
     type Mosaico = [[Char]]
 
-    type Frontera = [(Provincia, [Provincia])]
+    type Frontera = [(Region, [Region])]
 
-    data Mapa = Atlas [Provincia] Frontera
+    data Mapa = Atlas Regiones Frontera
 
     colores :: [Color]
     colores = [Rojo .. Azul]
 
     showColor :: Color -> Char
     showColor Rojo = 'r'
-    showColor Azul = 'a'
     showColor Verde = 'v'
+    showColor Amarillo = 'a'
+    showColor Morado = 'm'
+    showColor Lila = 'l'
+    showColor Azul = 'v'
 
     matches :: Eq a => [a] -> [a] -> Int
     matches xs ys = length (intersect xs ys)
 
-    prov1, prov2, prov3, prov4, prov5, prov6, prov7, prov8 :: Provincia
+    prov1, prov2, prov3, prov4, prov5, prov6, prov7, prov8, provExtra :: Provincia
     prov1 = Rect 0 1 2 4 "Huelva"
     prov2 = Rect 2 1 5 4 "Sevilla"
     prov3 = Rect 5 0 7 4 "Cordoba"
+
     prov4 = Rect 7 1 11 5 "Jaen"
     prov5 = Rect 3 4 5 7 "Cadiz"
+
     prov6 = Rect 5 5 11 7 "Malaga"
     prov7 = Rect 11 3 13 6 "Granada"
     prov8 = Rect 13 5 15 7 "Almeria"
 
-    provs :: Provincias
-    provs = [prov1,prov2,prov3,prov4,prov5,prov6,prov7,prov8]
+    provExtra = Rect 1 1 5 4 "Sevilla"
+
+    reg1 :: Region
+    reg1 = Reg [prov1,prov2,prov3] "reg1"
+
+    reg2 :: Region
+    reg2 = Reg [prov4,prov5] "reg2"
+
+    reg3 :: Region
+    reg3 = Reg [prov6,prov7,prov8] "reg3"
+
+    regExtra :: Region
+    regExtra = Reg [provExtra, prov4, prov5] "regExtra"
+
+    regs :: Regiones
+    regs = [reg1, reg2, reg3]
+
+    regsExtra :: Regiones
+    regsExtra = [reg1, regExtra]
     
     {-
      0123456789012345x
@@ -74,72 +104,92 @@ module ApartadoE.ApartadoE where
     ....vvrrrrrr..rr
     -}
 
-    encontrarFronteras :: [Provincia] -> [(Provincia, [Provincia])]
+    encontrarFronteras :: Regiones -> [(Region, [Region])]
     encontrarFronteras [] = []
-    encontrarFronteras provs0 = encontrarFronterasAux1 provs0 provs0
+    encontrarFronteras regs0 = encontrarFronterasAux1 regs0 regs0
         where
             encontrarFronterasAux1 [] _ = []
-            encontrarFronterasAux1 (x:xs) provs1 = encontrarFronterasAux2 x provs1 : encontrarFronterasAux1 xs provs1
-            encontrarFronterasAux2 x1 provs2 = (x1, encontrarFronterasAux3 x1 provs2)
+            encontrarFronterasAux1 (x:xs) regs1 = encontrarFronterasAux2 x regs1 : encontrarFronterasAux1 xs regs1
+            encontrarFronterasAux2 x1 regs2 = (x1, encontrarFronterasAux3 x1 regs2) -- tupla (Region, [Region]) 
             encontrarFronterasAux3 _ [] = []
-            encontrarFronterasAux3 a (b:bs) = do 
-                                            let l1 = [(coordenadaYSup a) .. (coordenadaYInf a)]
-                                            let l1' = [(coordenadaYSup b) .. (coordenadaYInf b)]
-                                            let l2 = [(coordenadaXSup a) .. (coordenadaXInf a)]
-                                            let l2' = [(coordenadaXSup b) .. (coordenadaXInf b)]
-                                            if ((matches l1 l1') > 0) && ((matches l2 l2') > 0) && (nombre a) /= (nombre b) then
-                                                b :encontrarFronterasAux3 a bs
+            encontrarFronterasAux3 reg (r1:rs) =    if nombreReg reg /= nombreReg r1 && encontrarFronterasAux4 (listaReg reg) (listaReg r1) then
+                                                        r1 : encontrarFronterasAux3 reg rs
+                                                    else
+                                                        encontrarFronterasAux3 reg rs
+            encontrarFronterasAux4 [a] b = encontrarFronterasAux5 a b
+            encontrarFronterasAux4 (a:as) b = encontrarFronterasAux5 a b || encontrarFronterasAux4 as b
+            encontrarFronterasAux5 _ [] = False
+            encontrarFronterasAux5 a' (b':bs') = do 
+                                            let l1 = [(coordenadaYSup a') .. (coordenadaYInf a')] -- vertical a
+                                            let l1' = [(coordenadaYSup b') .. (coordenadaYInf b')] -- vertical b
+                                            let l2 = [(coordenadaXSup a') .. (coordenadaXInf a')] -- horizontal a
+                                            let l2' = [(coordenadaXSup b') .. (coordenadaXInf b')] -- horizontal b
+                                            if ((matches l1 l1') > 0) && ((matches l2 l2') > 0) && (nombre a') /= (nombre b') then
+                                                True || encontrarFronterasAux5 a' bs' -- lista de provincias
                                             else
-                                                encontrarFronterasAux3 a bs
+                                                encontrarFronterasAux5 a' bs' -- lista de provincias
 
+    salva :: Regiones -> [Color] -> Either String Mosaico
+    salva re col = 
+        if cuadradosSolapados re then
+            Left ("Error Regiones solapadas")
+        else
+            Right(
+                do
+                    let fronteras = encontrarFronteras re
+                    let sol = solucionColorear (Atlas re fronteras,col)
+                    incluirRegiones mosaicoInicial sol
+                )
 
-    andalucia :: Provincias -> [Color] -> Either String Mosaico
-    andalucia provincias colors = if (cuadradosSolapados provincias) then
-                    Left "ERROR - Provincias solapadas"
-                else
-                    Right(do
-                            let sol = solucionColorear (Atlas provincias (encontrarFronteras provincias), colors)
-                            incluirProvincias mosaicoInicial sol
-                        )
-
-    cuadradosSolapados :: Provincias -> Bool
-    cuadradosSolapados provsx = cuadradosSolapadosAux provsx provs
-        where   cuadradosSolapadosAux [x] provs1 = funAux x provs1
-                cuadradosSolapadosAux (x:xs) provs1 = funAux x provs1 || cuadradosSolapadosAux xs provs1
-                funAux x [y] = comp x y
-                funAux x (y:ys) = comp x y || funAux x ys
-                comp x y = 
-                    if nombre x == nombre y then
-                        False
-                    else 
-                        do
-                            let lx = creaL (coordenadaXSup x + 1) (coordenadaXInf x - 1) (coordenadaYSup x + 1) (coordenadaYInf x - 1)
-                            let ly = creaL (coordenadaXSup y) (coordenadaXInf y) (coordenadaYSup y) (coordenadaYInf y)
-                            matches lx ly > 0
-                creaL xSup xInf ySup yInf = [(x,y) | x <- [xSup..xInf], y <- [ySup..yInf]]
+    cuadradosSolapados :: Regiones -> Bool
+    cuadradosSolapados [] = False
+    cuadradosSolapados x = cuadradosSolapadosAux1 (provinciasDeRegiones x)
+        where
+            provinciasDeRegiones [] = []
+            provinciasDeRegiones (x':xs) = (listaReg x') ++ (provinciasDeRegiones xs)
+            cuadradosSolapadosAux1 provsx = cuadradosSolapadosAux2 provsx provsx
+            cuadradosSolapadosAux2 [x'] provs1 = funAux x' provs1
+            cuadradosSolapadosAux2 (x':xs) provs1 = funAux x' provs1 || cuadradosSolapadosAux2 xs provs1
+            funAux x' [y] = comp x' y
+            funAux x' (y:ys) = comp x' y || funAux x' ys
+            comp x' y = 
+                if nombre x' == nombre y then
+                    False
+                else 
+                    do
+                        let lx = creaL (coordenadaXSup x' + 1) (coordenadaXInf x' - 1) (coordenadaYSup x' + 1) (coordenadaYInf x' - 1)
+                        let ly = creaL (coordenadaXSup y) (coordenadaXInf y) (coordenadaYSup y) (coordenadaYInf y)
+                        matches lx ly > 0
+            creaL xSup xInf ySup yInf = [(x'',y) | x'' <- [xSup..xInf], y <- [ySup..yInf]]
     
     
     findKey :: (Eq k) => k -> [(k,v)] -> v  
     findKey key xs = snd . head . filter (\(k,_) -> key == k) $ xs  
 
-    coloresFrontera :: Provincia->[(Provincia,Color)]->Frontera-> [Color]
+    coloresFrontera :: Region->[(Region,Color)]->Frontera-> [Color]
     coloresFrontera provincia coloreado frontera = [col | (prov,col)<- coloreado, elem prov (findKey provincia frontera)]
 
-    coloreados :: (Mapa,[Color]) -> [[(Provincia,Color)]]
+    coloreados :: (Mapa,[Color]) -> [[(Region,Color)]]
     coloreados ((Atlas [] _), _) = [[]]
-    coloreados ((Atlas (prov:provs2) frontera), colores') = [(prov,color):coloreado' |
-                                        coloreado' <- coloreados ((Atlas provs2 frontera), colores')
-                                        , color <- colores' \\ (coloresFrontera prov coloreado' frontera)]
+    coloreados ((Atlas (reg':regs') frontera), colores') = [(reg',color):coloreado' |
+                                        coloreado' <- coloreados ((Atlas regs' frontera), colores')
+                                        , color <- colores' \\ (coloresFrontera reg' coloreado' frontera)]
 
-    solucionColorear:: (Mapa,[Color]) -> [(Provincia,Color)]
+    solucionColorear:: (Mapa,[Color]) -> [(Region,Color)]
     solucionColorear = head . coloreados    
-    
+    --------------------------------------------------------------------
     mosaicoInicial :: Mosaico
     mosaicoInicial = replicate 8 (replicate 16 '.')
- 
-    dibujarMosaico :: (Either String Mosaico) -> IO ()
+
+    dibujarMosaico :: Either String Mosaico -> IO ()
     dibujarMosaico (Right x) = putStr (unlines x)
     dibujarMosaico (Left x) = print x -- Imprimir el error
+
+    incluirRegiones :: Mosaico -> [(Region,Color)] -> Mosaico
+    incluirRegiones = foldl incluirRegion
+
+    incluirRegion :: Mosaico -> (Region,Color) -> Mosaico
+    incluirRegion m (r, color) = incluirProvincias m [(p, color) | p<-(listaReg r)]
 
     incluirProvincias :: Mosaico -> [(Provincia,Color)] -> Mosaico
     incluirProvincias = foldl incluirProvincia
@@ -158,31 +208,30 @@ module ApartadoE.ApartadoE where
     mostrarSeparador :: IO ()
     mostrarSeparador = putStrLn $ replicate 20 '-'
 
-    instance Eq Provincia where
-        (==) x y = (nombre x) == (nombre y)
-    
+    introducirRegiones :: Regiones -> IO ()
+    introducirRegiones p2 = do 
+                                    putStrLn "Introduce una region:"
+                                    region <- getLine
+                                    let regionNueva = [(read region)]
+                                    let aux = (salva (p2 ++ regionNueva) colores)
+                                    
+                                    if isLeft (aux) then
+                                        --Error
+                                        do
+                                            dibujarMosaico aux
+                                            introducirRegiones p2
+                                    else 
+                                        do
+                                            dibujarMosaico aux
+                                            putStrLn "¿Quieres introducir mas regiones?(s/n):"
+                                            opcionSN <- getLine
+                                            if opcionSN == "s" then
+                                                introducirRegiones (p2 ++ regionNueva)
+                                            else
+                                                introducirColores (p2 ++ regionNueva)
 
-    introducirRectangulos :: [Provincia] -> IO ()
-    introducirRectangulos p = introducirProvinciaAux p
-        where introducirProvinciaAux p2 = do 
-                                                putStrLn "Introduce una provincia:"
-                                                provincia <- getLine
-                                                let provinciaNueva = [(read provincia)]
-                                                let aux = (andalucia (p2 ++ provinciaNueva) [Rojo .. Azul])
-                                                
-                                                if isLeft (aux) then
-                                                    --Error
-                                                    dibujarMosaico aux
-                                                else 
-                                                    do
-                                                        putStrLn "¿Quieres introducir mas provincias?(s/n):"
-                                                        opcionSN <- getLine
-                                                        if opcionSN == "s" then
-                                                            introducirProvinciaAux (p2 ++ provinciaNueva)
-                                                        else
-                                                            introducirColores (p2 ++ provinciaNueva)
-    introducirColores :: [Provincia] -> IO ()
-    introducirColores provs' = do 
+    introducirColores :: Regiones -> IO ()
+    introducirColores regs' = do 
                                     putStr "Colores disponibles: "
                                     print (stringColores colores)
                                     putStrLn "Elige la cantidad de colores:"
@@ -191,31 +240,44 @@ module ApartadoE.ApartadoE where
                                     if cantidad > (length colores) || cantidad <= 0 then
                                         do
                                             print ("Numero de colores no disponible")
-                                            introducirColores provs'
+                                            introducirColores regs'
                                     else 
                                         do
                                             let colores' = take cantidad colores
-                                            dibujarMosaico (andalucia provs' colores')
+                                            dibujarMosaico (salva regs' colores')
 
     printColor :: Color -> String
     printColor Rojo = "Rojo"
     printColor Verde = "Verde"
     printColor Azul = "Azul"
+    printColor Amarillo = "Amarillo"
+    printColor Lila = "Lila"
+    printColor Morado = "Morado"
 
     stringColores :: [Color] -> String
     stringColores [x] = printColor x
     stringColores (x:xs) = (printColor x) ++ ", " ++ stringColores xs
 
+    instance Eq Region where
+        (==) x y = (nombreReg x) == (nombreReg y)
+
     mainE :: IO()
     mainE = do
-        print ("Solucion no solapada")
-        dibujarMosaico (andalucia provs colores)
+        
+        print ("Regiones no solapadas")
+        dibujarMosaico (salva regs colores)
+
         mostrarSeparador
 
-        putStrLn "\nQuieres introducir una o más provincias? (s/n)"
+        print ("Regiones solapadas")
+        dibujarMosaico (salva regsExtra colores)
+
+        putStrLn "\nQuieres introducir una o más regiones? (s/n)"
         opcion <- getLine
 
         if opcion == "s" then do
-            introducirRectangulos provs
+            introducirRegiones regs
         else
-            introducirColores provs
+            introducirColores regs
+
+        -- Reg [Rect 1 1 1 1 "x", Rect 2 2 2 2 "sdf"] "dfa"

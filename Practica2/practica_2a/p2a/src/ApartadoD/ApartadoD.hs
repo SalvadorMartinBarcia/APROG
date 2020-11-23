@@ -216,15 +216,67 @@ module ApartadoD.ApartadoD where
     mainD :: IO()
     mainD = do
         
-        print (cuadradosSolapados [prov1,prov1])
-        -- print ("Solucion no solapada")
-        -- dibujarMosaico (andalucia provs colores)
-        -- mostrarSeparador
+        print ("Mapa inicial")
+        dibujarMosaico (andalucia provs colores)
 
-        -- putStrLn "\nQuieres introducir una o más provincias? (s/n)"
-        -- opcion <- getLine
+        putStrLn "\nQuieres introducir una o más provincias? (s/n)"
+        opcion <- getLine
 
-        -- if opcion == "s" then do
-        --     introducirRectangulos provs
-        -- else
-        --     introducirColores provs
+        if opcion == "s" then do
+            introducirRectangulos provs
+        else
+            introducirColores provs
+
+    -- "Mapa inicial"
+    -- ................
+    -- ......rr........
+    -- .rraaarraaaa....
+    -- .rraaarraaaa....
+    -- .rraaarraaaavv..
+    -- ....vv..aaaavv..
+    -- ....vvrrrrrrvvrr
+    -- ....vvrrrrrr..rr
+
+    -- Quieres introducir una o más provincias? (s/n)
+    -- s
+    -- Introduce una provincia:
+    -- Rect 0 0 5 2 "MADRIZ"        
+    -- "ERROR - Provincias solapadas"
+    -- Introduce una provincia:
+    -- Rect 0 0 5 1 "Madrid"        
+    -- ¿Quieres introducir mas provincias?(s/n):
+    -- n
+    -- Colores disponibles: "Rojo, Verde, Amarillo, Morado, Lila, Azul"
+    -- Elige la cantidad de colores:
+    -- 3
+    -- ................
+    -- .rrrrrvv........
+    -- .vvaaavvrrrr....
+    -- .vvaaavvrrrr....
+    -- .vvaaavvrrrrvv..
+    -- ....rr..rrrrvv..
+    -- ....rraaaaaavvrr
+    -- ....rraaaaaa..rr
+
+    -- Otro ejemplo de ejecucion
+    
+    -- "Mapa inicial"
+    -- ................
+    -- ......rr........
+    -- .rraaarraaaa....
+    -- .rraaarraaaa....
+    -- .rraaarraaaavv..
+    -- ....vv..aaaavv..
+    -- ....vvrrrrrrvvrr
+    -- ....vvrrrrrr..rr
+
+    -- Quieres introducir una o más provincias? (s/n)
+    -- s
+    -- Introduce una provincia:
+    -- Rect 0 0 5 1 "Madrid"
+    -- ¿Quieres introducir mas provincias?(s/n):
+
+    -- Colores disponibles: "Rojo, Verde, Amarillo, Morado, Lila, Azul"
+    -- Elige la cantidad de colores:
+    -- 2
+    -- p2a-exe.EXE: Prelude.head: empty list

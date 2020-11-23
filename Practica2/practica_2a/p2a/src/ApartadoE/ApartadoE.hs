@@ -51,11 +51,11 @@ module ApartadoE.ApartadoE where
     prov1, prov2, prov3, prov4, prov5, prov6, prov7, prov8, provExtra :: Provincia
     prov1 = Rect 0 1 2 4 "Huelva"
     prov2 = Rect 2 1 5 4 "Sevilla"
+
     prov3 = Rect 5 0 7 4 "Cordoba"
-
     prov4 = Rect 7 1 11 5 "Jaen"
-    prov5 = Rect 3 4 5 7 "Cadiz"
 
+    prov5 = Rect 3 4 5 7 "Cadiz"
     prov6 = Rect 5 5 11 7 "Malaga"
     prov7 = Rect 11 3 13 6 "Granada"
     prov8 = Rect 13 5 15 7 "Almeria"
@@ -63,13 +63,13 @@ module ApartadoE.ApartadoE where
     provExtra = Rect 1 1 5 4 "Sevilla"
 
     reg1 :: Region
-    reg1 = Reg [prov1,prov2,prov3] "reg1"
+    reg1 = Reg [prov1,prov2] "reg1"
 
     reg2 :: Region
-    reg2 = Reg [prov4,prov5] "reg2"
+    reg2 = Reg [prov3,prov4] "reg2"
 
     reg3 :: Region
-    reg3 = Reg [prov6,prov7,prov8] "reg3"
+    reg3 = Reg [prov5,prov6,prov7,prov8] "reg3"
 
     regExtra :: Region
     regExtra = Reg [provExtra, prov4, prov5] "regExtra"
@@ -83,7 +83,7 @@ module ApartadoE.ApartadoE where
     {-
      0123456789012345x
     0................
-    1......oo........ 
+    1......oo........
     2.hhsssoojjjj....
     3.hhsssoojjjj....
     4.hhsssoojjjjgg..
@@ -129,9 +129,29 @@ module ApartadoE.ApartadoE where
                                             else
                                                 encontrarFronterasAux5 a' bs' -- lista de provincias
 
-    salva :: Regiones -> [Color] -> Either String Mosaico
-    salva re col = 
-        if cuadradosSolapados re then
+    compruebaVecinosRegs :: Regiones -> Bool
+    compruebaVecinosRegs [reg] = compruebaVecinos reg
+    compruebaVecinosRegs (reg:regs') = compruebaVecinos reg && compruebaVecinosRegs regs'
+
+    compruebaVecinos :: Region -> Bool
+    compruebaVecinos reg = aux1 (listaReg reg) (listaReg reg) 
+        where
+            aux1 [a] b = aux2 a b
+            aux1 (a:as) b = aux2 a b && aux1 as b
+            aux2 _ [] = False
+            aux2 a' (b':bs') = do 
+                                    let l1 = [(coordenadaYSup a') .. (coordenadaYInf a')] -- vertical a
+                                    let l1' = [(coordenadaYSup b') .. (coordenadaYInf b')] -- vertical b
+                                    let l2 = [(coordenadaXSup a') .. (coordenadaXInf a')] -- horizontal a
+                                    let l2' = [(coordenadaXSup b') .. (coordenadaXInf b')] -- horizontal b
+                                    if ((matches l1 l1') > 0) && ((matches l2 l2') > 0) && (nombre a') /= (nombre b') then
+                                        True || aux2 a' bs' -- lista de provincias
+                                    else
+                                        aux2 a' bs' -- lista de provincias
+    
+    territorio :: Regiones -> [Color] -> Either String Mosaico
+    territorio re col = 
+        if cuadradosSolapados re || not (compruebaVecinosRegs re) then
             Left ("Error Regiones solapadas")
         else
             Right(
@@ -213,16 +233,15 @@ module ApartadoE.ApartadoE where
                                     putStrLn "Introduce una region:"
                                     region <- getLine
                                     let regionNueva = [(read region)]
-                                    let aux = (salva (p2 ++ regionNueva) colores)
+                                    let aux = (territorio (p2 ++ regionNueva) colores)
                                     
-                                    if isLeft (aux) then
+                                    if isLeft (aux) || not (compruebaVecinosRegs (p2 ++ regionNueva)) then
                                         --Error
                                         do
                                             dibujarMosaico aux
                                             introducirRegiones p2
                                     else 
                                         do
-                                            dibujarMosaico aux
                                             putStrLn "¿Quieres introducir mas regiones?(s/n):"
                                             opcionSN <- getLine
                                             if opcionSN == "s" then
@@ -244,7 +263,7 @@ module ApartadoE.ApartadoE where
                                     else 
                                         do
                                             let colores' = take cantidad colores
-                                            dibujarMosaico (salva regs' colores')
+                                            dibujarMosaico (territorio regs' colores')
 
     printColor :: Color -> String
     printColor Rojo = "Rojo"
@@ -264,13 +283,13 @@ module ApartadoE.ApartadoE where
     mainE :: IO()
     mainE = do
         
-        print ("Regiones no solapadas")
-        dibujarMosaico (salva regs colores)
+        print ("Ejemplo con Regiones no solapadas")
+        dibujarMosaico (territorio regs colores)
 
         mostrarSeparador
 
-        print ("Regiones solapadas")
-        dibujarMosaico (salva regsExtra colores)
+        print ("Ejemplo con Regiones solapadas")
+        dibujarMosaico (territorio regsExtra colores)
 
         putStrLn "\nQuieres introducir una o más regiones? (s/n)"
         opcion <- getLine
@@ -280,4 +299,43 @@ module ApartadoE.ApartadoE where
         else
             introducirColores regs
 
-        -- Reg [Rect 1 1 1 1 "x", Rect 2 2 2 2 "sdf"] "dfa"
+    -- Reg [Rect 1 1 1 1 "x", Rect 2 2 2 2 "sdf"] "dfa"
+    ----------------------Ejecucion ApartadoE------------------------------------------
+    -- "Ejemplo con Regiones no solapadas"
+    -- ................
+    -- ......vv........
+    -- .aaaaavvvvvv....
+    -- .aaaaavvvvvv....
+    -- .aaaaavvvvvvrr..
+    -- ....rr..vvvvrr..
+    -- ....rrrrrrrrrrrr
+    -- ....rrrrrrrr..rr
+    -- --------------------
+    -- "Ejemplo con Regiones solapadas"
+    -- "Error Regiones solapadas"
+
+    -- Quieres introducir una o más regiones? (s/n)
+    -- s
+    -- Introduce una region:
+    -- Reg [Rect 0 0 2 1 "p1", Rect 2 0 5 1 "p2"] "r1" 
+    -- ¿Quieres introducir mas regiones?(s/n):
+    -- s
+    -- Introduce una region:
+    -- Reg [Rect 0 0 2 2 "p1", Rect 2 0 5 1 "p2"] "r1"  
+    -- "Error Regiones solapadas"
+    -- Introduce una region:
+    -- Reg [Rect 7 0 9 1 "p3", Rect 9 0 11 1 "p4"] "r2"  
+    -- ¿Quieres introducir mas regiones?(s/n):
+    -- n
+    -- Colores disponibles: "Rojo, Verde, Amarillo, Morado, Lila, Azul"
+    -- Elige la cantidad de colores:
+    -- 3
+    -- ................
+    -- .rrrrrvvrrrr....
+    -- .aaaaavvvvvv....
+    -- .aaaaavvvvvv....
+    -- .aaaaavvvvvvrr..
+    -- ....rr..vvvvrr..
+    -- ....rrrrrrrrrrrr
+    -- ....rrrrrrrr..rr
+    

@@ -21,8 +21,6 @@ module ApartadoB.ApartadoB where
     showColor Rojo = 'r'
     showColor Azul = 'a'
     showColor Verde = 'v'
-    
-
 
     matches :: Eq a => [a] -> [a] -> Int
     matches xs ys = length (intersect xs ys)

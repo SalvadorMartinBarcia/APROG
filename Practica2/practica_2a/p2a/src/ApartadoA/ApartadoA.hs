@@ -39,3 +39,12 @@ module ApartadoA.ApartadoA where
 
     sol1 = solucionColorear (andalucia, [Rojo .. Azul]) -- encuentra una solucion
     sol2 = solucionColorear (andalucia, [Rojo,Verde]) -- sin solución
+
+    mainA :: IO()
+    mainA = do
+        print (sol1)
+        print (sol2)
+
+    ----------------------Ejecucion ApartadoA------------------------------------------
+    -- [(Al,Verde),(Ca,Azul),(Co,Azul),(Gr,Rojo),(Ja,Verde),(Hu,Verde),(Ma,Verde),(Se,Rojo)]
+    -- p2a-exe.EXE: Prelude.head: empty list

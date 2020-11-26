@@ -130,6 +130,7 @@ module ApartadoB.ApartadoB where
     mainB :: IO()
     mainB = do
         
+        print ("----------------------Ejecucion ApartadoB------------------------------------------")
         let sol = solucionColorear (andalucia, [Rojo .. Azul])
         print (sol)
         dibujarMosaico mosaicoInicial

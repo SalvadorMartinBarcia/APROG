@@ -42,8 +42,9 @@ module ApartadoA.ApartadoA where
 
     mainA :: IO()
     mainA = do
+        print ("----------------------Ejecucion ApartadoA------------------------------------------")
         print (sol1)
-        print (sol2)
+        --print (sol2)
 
     ----------------------Ejecucion ApartadoA------------------------------------------
     -- [(Al,Verde),(Ca,Azul),(Co,Azul),(Gr,Rojo),(Ja,Verde),(Hu,Verde),(Ma,Verde),(Se,Rojo)]

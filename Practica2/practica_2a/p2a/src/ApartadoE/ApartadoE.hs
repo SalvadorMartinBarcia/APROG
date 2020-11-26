@@ -283,6 +283,7 @@ module ApartadoE.ApartadoE where
     mainE :: IO()
     mainE = do
         
+        print ("----------------------Ejecucion ApartadoE------------------------------------------")
         print ("Ejemplo con Regiones no solapadas")
         dibujarMosaico (territorio regs colores)
 

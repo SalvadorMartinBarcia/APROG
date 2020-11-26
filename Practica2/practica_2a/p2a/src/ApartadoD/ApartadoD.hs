@@ -216,6 +216,7 @@ module ApartadoD.ApartadoD where
     mainD :: IO()
     mainD = do
         
+        print ("----------------------Ejecucion ApartadoD------------------------------------------")
         print ("Mapa inicial")
         dibujarMosaico (andalucia provs colores)
 

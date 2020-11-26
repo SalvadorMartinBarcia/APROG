@@ -159,6 +159,7 @@ module ApartadoC.ApartadoC where
     mainC :: IO()
     mainC = do
 
+        print ("----------------------Ejecucion ApartadoC------------------------------------------")
         print ("Ejemplo con provincias no solapadas")
         dibujarMosaico (andalucia provs)
         mostrarSeparador

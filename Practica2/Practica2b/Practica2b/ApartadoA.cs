@@ -16,24 +16,46 @@ namespace ApartadoA
             List<Color> colores2 = new List<Color>() { Color.Rojo, Color.Azul };
 
             FrAndalucia(Provincia.Co);
-            
+
+            //Ejemplos de tuplas en c#
+            var t1 = new Tuple<Double, int>(4.5, 3);
+            var t2 = Tuple.Create(4.5, 3);
+
+            Console.WriteLine($"Tuple with elements {t1.Item1} and {t1.Item2}.");
+
         }
 
-        public static List<Dictionary<Provincia, Color>> Coloreados(List<Provincia> provincias, List<Color> colores)
+        // Colores de provincias vecinas para un coloreado
+        // coloresFrontera
+        public static List<Color> ColoresFrontera(Provincia p, List<Tuple<Provincia, Color>> coloreado)
         {
-            List<Dictionary<Provincia, Color>> res = null;
-            int i, j;
+            List<Color> res = new List<Color>();
 
-            for(i = 0 ; i < provincias.Count ; i++)
-            {
-                for(j = 0 ; j < colores.Count ; j++)
+            foreach (Tuple<Provincia, Color> t in coloreado) {
+                if (FrAndalucia(p).Contains(t.Item1))
                 {
-
+                    res.Add(t.Item2);
                 }
             }
-
             return res;
         }
+
+        // Posibles coloreados para un mapa y una lista de colores
+        public static List<List<Tuple<Provincia, Color>>> Coloreados(Tuple<Mapa, List<Color>> t)
+        {
+            return null;
+        }
+
+
+        // solucionColorear
+        public static List<Tuple<Provincia, Color>> SolucionColorear (List<List<Tuple<Provincia, Color>>> lista)
+        {
+            if (lista == null)
+                return null;
+            else
+                return lista[0];
+        }
+
         
         public static List<Provincia> FrAndalucia(Provincia p)
         {
@@ -59,12 +81,17 @@ namespace ApartadoA
         }
         public class Mapa
         {
-            public List<Provincia> provincias;
+            public List<Provincia> provincias = new List<Provincia>(){  Provincia.Al,
+                                                                        Provincia.Ca,
+                                                                        Provincia.Co,
+                                                                        Provincia.Gr,
+                                                                        Provincia.Ja,
+                                                                        Provincia.Hu,
+                                                                        Provincia.Ma,
+                                                                        Provincia.Se };
 
-            public Mapa()
-            {
+            public Mapa() { } // Atlas
 
-            }
         }
         
     }

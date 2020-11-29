@@ -5,3 +5,10 @@ C:\Users\Borja\Desktop\APROG\haskell\practicas\Practica\Practica2\Practica2b\Pra
 C:\Users\Borja\Desktop\APROG\haskell\practicas\Practica\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.csproj.CoreCompileInputs.cache
 C:\Users\Borja\Desktop\APROG\haskell\practicas\Practica\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.exe
 C:\Users\Borja\Desktop\APROG\haskell\practicas\Practica\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.pdb
+C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\bin\Debug\Practica2b.exe.config
+C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\bin\Debug\Practica2b.exe
+C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\bin\Debug\Practica2b.pdb
+C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.csprojAssemblyReference.cache
+C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.csproj.CoreCompileInputs.cache
+C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.exe
+C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.pdb

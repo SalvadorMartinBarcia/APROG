@@ -26,7 +26,7 @@ module ApartadoA.ApartadoA where
     -- Colores de provincias vecinas para un coloreado
     coloresFrontera :: Provincia->[(Provincia,Color)]->Frontera-> [Color]
     coloresFrontera provincia coloreado frontera = [col | (prov,col)<- coloreado, elem prov (frontera provincia)]
-    
+
     -- Posibles coloreados para un mapa y una lista de colores
     coloreados :: (Mapa,[Color]) -> [[(Provincia,Color)]]
     coloreados ((Atlas [] _), _) = [[]]
@@ -44,7 +44,7 @@ module ApartadoA.ApartadoA where
     mainA = do
         print ("----------------------Ejecucion ApartadoA------------------------------------------")
         print (sol1)
-        --print (sol2)
+        -- print (sol2)
 
     ----------------------Ejecucion ApartadoA------------------------------------------
     -- [(Al,Verde),(Ca,Azul),(Co,Azul),(Gr,Rojo),(Ja,Verde),(Hu,Verde),(Ma,Verde),(Se,Rojo)]

@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApartadoBMutable.cs" />
+    <Compile Include="ApartadoBInmutable.cs" />
     <Compile Include="ApartadoA.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

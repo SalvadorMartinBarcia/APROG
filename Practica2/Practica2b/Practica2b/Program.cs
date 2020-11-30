@@ -10,7 +10,20 @@ namespace Practica2b
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Ejecución ApartadoA:");
             ApartadoA.ApartadoA.MainA();
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("Ejecución ApartadoB Inmutable:");
+            ApartadoBInmutable.ApartadoBInmutable.MainB();
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("Ejecución ApartadoB Mutable:");
+            ApartadoBMutable.ApartadoBMutable.MainB();
+            Console.WriteLine();
+            Console.WriteLine();
         }
     }
 }

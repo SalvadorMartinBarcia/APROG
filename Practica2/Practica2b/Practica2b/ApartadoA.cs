@@ -13,9 +13,21 @@ namespace ApartadoA
         public static void MainA()
         {
             List<Tuple<Provincia, Color>> sol;
-            List<Color> colores1 = new List<Color>() { Color.Rojo, Color.Verde, Color.Azul };
 
+            List<Color> colores1 = new List<Color>() { Color.Rojo, Color.Verde, Color.Azul };
+            List<Color> colores2 = new List<Color>() { Color.Rojo, Color.Verde };
+
+
+            // Con solucion
             sol = SolucionColorear(new Tuple<Mapa, List<Color>>(Andalucia, colores1));
+
+            foreach (var obj in sol)
+            {
+                Console.Write(obj + ", ");
+            }
+
+            // Sin solucion
+            sol = SolucionColorear(new Tuple<Mapa, List<Color>>(Andalucia, colores2));
 
             foreach (var obj in sol)
             {

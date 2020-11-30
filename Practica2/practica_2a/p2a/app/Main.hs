@@ -8,8 +8,8 @@ import ApartadoE.ApartadoE
 
 main :: IO ()
 main = do
-    mainA
+    -- mainA
     mainB
-    mainC
-    mainD
-    mainE
+    -- mainC
+    -- mainD
+    -- mainE

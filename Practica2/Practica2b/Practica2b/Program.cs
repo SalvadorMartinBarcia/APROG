@@ -24,6 +24,11 @@ namespace Practica2b
             ApartadoBMutable.ApartadoBMutable.MainB();
             Console.WriteLine();
             Console.WriteLine();
+
+            Console.WriteLine("Ejecución ApartadoC:");
+            ApartadoC.ApartadoC.MainC();
+            Console.WriteLine();
+            Console.WriteLine();
         }
     }
 }

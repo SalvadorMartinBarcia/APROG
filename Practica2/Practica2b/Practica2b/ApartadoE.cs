@@ -12,72 +12,65 @@ namespace ApartadoE
         public static void MainE()
         {
 
-            fronteras = EncontrarFronteras(regs);
+            //fronteras = EncontrarFronteras(regs);
 
-            //foreach (KeyValuePair<Region, List<Region>> kvp in fronteras)
+            ////foreach (KeyValuePair<Region, List<Region>> kvp in fronteras)
+            ////{
+            ////    Console.WriteLine("Key = {0}", kvp.Key);
+            ////    kvp.Value.ForEach(i => Console.WriteLine(i));
+
+            ////    Console.WriteLine();
+            ////}
+
+            ////Console.WriteLine(CompruebaVecinos(regs));
+
+            //List<Tuple<Region, Color>> sol = SolucionColorear(new Tuple<Mapa, List<Color>>(CrearMapa(regs), new List<Color>() { Color.Rojo, Color.Verde, Color.Azul, Color.Morado }));
+
+            //foreach (var obj in sol)
             //{
-            //    Console.WriteLine("Key = {0}", kvp.Key);
-            //    kvp.Value.ForEach(i => Console.WriteLine(i));
-
-            //    Console.WriteLine();
+            //    Console.Write(obj + ", ");
             //}
-
-            //Console.WriteLine(CompruebaVecinos(regs));
-
-            List<Tuple<Region, Color>> sol = SolucionColorear(new Tuple<Mapa, List<Color>>(CrearMapa(regs), new List<Color>() { Color.Rojo, Color.Verde, Color.Azul, Color.Morado }));
-
-            foreach (var obj in sol)
-            {
-                Console.Write(obj + ", ");
-            }
 
             /////////////////////////////////////
 
-            //List<Tuple<Provincia, Color>> sol;
-            //String opcion;
+            List<Tuple<Region, Color>> sol;
+            
+            IntroducirRegiones();
+            
+            Console.WriteLine();
+            Console.WriteLine("Lista de regiones: ");
+            regs.ForEach(i => Console.WriteLine(i));
 
-            //Console.WriteLine("Quieres introducir una provincia?(s/n)");
-            //opcion = Console.ReadLine();
+            IntroducirColores();
 
-            //if (opcion == "s")
-            //{
-            //    IntroducirRectangulos();
-            //}
+            // Inicializacion de variables globales
+            fronteras = EncontrarFronteras(regs);
 
-            //Console.WriteLine();
-            //Console.WriteLine("Lista de provincias: ");
-            //provs.ForEach(i => Console.WriteLine(i));
+            Console.WriteLine();
+            Console.WriteLine("Creacion de Andalucia: ");
+            andalucia = CrearMapa(regs);
 
-            //IntroducirColores();
+            Console.WriteLine();
+            Console.WriteLine("Creacion de Andalucia con regiones solapadas: ");
+            andaluciaSolapada = CrearMapa(regs); // Lanza excepcion controlada
 
-            //// Inicializacion de variables globales
-            //fronteras = EncontrarFronteras(provs);
+            // Encontrar solucion
+            sol = SolucionColorear(new Tuple<Mapa, List<Color>>(andalucia, coloresElejidos));
 
-            //Console.WriteLine();
-            //Console.WriteLine("Creacion de Andalucia: ");
-            //andalucia = CrearMapa(provs);
+            // Pintar mosaico con solucion
+            Console.WriteLine();
+            Console.WriteLine("Mosaico de Andalucia: ");
+            Console.WriteLine();
 
-            //Console.WriteLine();
-            //Console.WriteLine("Creacion de Andalucia con provincias solapadas: ");
-            //andaluciaSolapada = CrearMapa(provsSolpada); // Lanza excepcion controlada
+            List<List<Char>> mosaicoInicial = MosaicoInicial();
 
-            //// Encontrar solucion
-            //sol = SolucionColorear(new Tuple<Mapa, List<Color>>(andalucia, coloresElejidos));
+            DibujarMosaico(mosaicoInicial);
 
-            //// Pintar mosaico con solucion
-            //Console.WriteLine();
-            //Console.WriteLine("Mosaico de Andalucia: ");
-            //Console.WriteLine();
+            MostrarSeparador();
 
-            //List<List<Char>> mosaicoInicial = MosaicoInicial();
+            List<List<Char>> mosaicoSol = IncluirRegiones(mosaicoInicial, sol);
 
-            //DibujarMosaico(mosaicoInicial);
-
-            //MostrarSeparador();
-
-            //List<List<Char>> mosaicoSol = IncluirProvincias(mosaicoInicial, sol);
-
-            //DibujarMosaico(mosaicoSol);
+            DibujarMosaico(mosaicoSol);
 
         }
 
@@ -552,12 +545,12 @@ namespace ApartadoE
         {
             foreach (Provincia prov in reg.ListaProvincias1)
             {
-                mosaico = IncluirRegion(prov, color, mosaico);
+                mosaico = IncluirProvincia(prov, color, mosaico);
             }
 
             return mosaico;
         }
-        public static List<List<Char>> IncluirRegion(Provincia prov, Color color, List<List<Char>> mosaico)
+        public static List<List<Char>> IncluirProvincia(Provincia prov, Color color, List<List<Char>> mosaico)
         {
             int i, j;
             List<List<Char>> res = new List<List<Char>>();
@@ -614,18 +607,31 @@ namespace ApartadoE
             Boolean res = false;
             List<Tuple<int, int>> list1, list2;
 
-            foreach (Region reg in regs)
+            foreach (Region reg1 in regs)
             {
-                foreach (Provincia p1 in reg.ListaProvincias1)
+                foreach(Region reg2 in regs)
                 {
-                    foreach (Provincia p2 in reg.ListaProvincias1)
+                    if (reg1.Nombre == reg2.Nombre) continue;
+
+                    foreach (Provincia p1 in reg1.ListaProvincias1)
                     {
-                        if (p1.Nombre == p2.Nombre) continue;
-                        list1 = creaL(p1.CoordenadaXSup + 1, p1.CoordenadaXInf - 1, p1.CoordenadaYSup + 1, p1.CoordenadaYInf - 1);
-                        list2 = creaL(p2.CoordenadaXSup, p2.CoordenadaXInf, p2.CoordenadaYSup, p2.CoordenadaYInf);
-                        res = res || (MatchesTuple(list1, list2) > 0);
+                        foreach (Provincia p2 in reg1.ListaProvincias1)
+                        {
+                            if (p1.Nombre == p2.Nombre) continue;
+                            list1 = creaL(p1.CoordenadaXSup + 1, p1.CoordenadaXInf - 1, p1.CoordenadaYSup + 1, p1.CoordenadaYInf - 1);
+                            list2 = creaL(p2.CoordenadaXSup, p2.CoordenadaXInf, p2.CoordenadaYSup, p2.CoordenadaYInf);
+                            res = res || (MatchesTuple(list1, list2) > 0);
+                        }
+                        foreach (Provincia p3 in reg2.ListaProvincias1)
+                        {
+                            if (p1.Nombre == p3.Nombre) continue;
+                            list1 = creaL(p1.CoordenadaXSup + 1, p1.CoordenadaXInf - 1, p1.CoordenadaYSup + 1, p1.CoordenadaYInf - 1);
+                            list2 = creaL(p3.CoordenadaXSup, p3.CoordenadaXInf, p3.CoordenadaYSup, p3.CoordenadaYInf);
+                            res = res || (MatchesTuple(list1, list2) > 0);
+                        }
                     }
                 }
+                
             }
             
             return res;

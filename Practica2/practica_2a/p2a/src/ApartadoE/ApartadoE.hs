@@ -145,9 +145,9 @@ module ApartadoE.ApartadoE where
                                     let l2 = [(coordenadaXSup a') .. (coordenadaXInf a')] -- horizontal a
                                     let l2' = [(coordenadaXSup b') .. (coordenadaXInf b')] -- horizontal b
                                     if ((matches l1 l1') > 0) && ((matches l2 l2') > 0) && (nombre a') /= (nombre b') then
-                                        True || aux2 a' bs' -- lista de provincias
+                                        True || aux2 a' bs'
                                     else
-                                        aux2 a' bs' -- lista de provincias
+                                        aux2 a' bs'
     
     territorio :: Regiones -> [Color] -> Either String Mosaico
     territorio re col = 
@@ -283,22 +283,23 @@ module ApartadoE.ApartadoE where
     mainE :: IO()
     mainE = do
         
-        print ("----------------------Ejecucion ApartadoE------------------------------------------")
-        print ("Ejemplo con Regiones no solapadas")
-        dibujarMosaico (territorio regs colores)
+        print (compruebaVecinosRegs regs)
+        -- print ("----------------------Ejecucion ApartadoE------------------------------------------")
+        -- print ("Ejemplo con Regiones no solapadas")
+        -- dibujarMosaico (territorio regs colores)
 
-        mostrarSeparador
+        -- mostrarSeparador
 
-        print ("Ejemplo con Regiones solapadas")
-        dibujarMosaico (territorio regsExtra colores)
+        -- print ("Ejemplo con Regiones solapadas")
+        -- dibujarMosaico (territorio regsExtra colores)
 
-        putStrLn "\nQuieres introducir una o más regiones? (s/n)"
-        opcion <- getLine
+        -- putStrLn "\nQuieres introducir una o más regiones? (s/n)"
+        -- opcion <- getLine
 
-        if opcion == "s" then do
-            introducirRegiones regs
-        else
-            introducirColores regs
+        -- if opcion == "s" then do
+        --     introducirRegiones regs
+        -- else
+        --     introducirColores regs
 
     -- Reg [Rect 1 1 1 1 "x", Rect 2 2 2 2 "sdf"] "dfa"
     ----------------------Ejecucion ApartadoE------------------------------------------
@@ -339,4 +340,3 @@ module ApartadoE.ApartadoE where
     -- ....rr..vvvvrr..
     -- ....rrrrrrrrrrrr
     -- ....rrrrrrrr..rr
-    

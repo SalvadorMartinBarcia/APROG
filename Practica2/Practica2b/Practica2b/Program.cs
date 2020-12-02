@@ -10,23 +10,33 @@ namespace Practica2b
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Ejecución ApartadoA:");
-            ApartadoA.ApartadoA.MainA();
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine("Ejecución ApartadoA:");
+            //ApartadoA.ApartadoA.MainA();
+            //Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.WriteLine("Ejecución ApartadoB Inmutable:");
-            ApartadoBInmutable.ApartadoBInmutable.MainB();
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine("Ejecución ApartadoB Inmutable:");
+            //ApartadoBInmutable.ApartadoBInmutable.MainB();
+            //Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.WriteLine("Ejecución ApartadoB Mutable:");
-            ApartadoBMutable.ApartadoBMutable.MainB();
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine("Ejecución ApartadoB Mutable:");
+            //ApartadoBMutable.ApartadoBMutable.MainB();
+            //Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.WriteLine("Ejecución ApartadoC:");
-            ApartadoC.ApartadoC.MainC();
+            //Console.WriteLine("Ejecución ApartadoC:");
+            //ApartadoC.ApartadoC.MainC();
+            //Console.WriteLine();
+            //Console.WriteLine();
+
+            //Console.WriteLine("Ejecución ApartadoD:");
+            //ApartadoD.ApartadoD.MainD();
+            //Console.WriteLine();
+            //Console.WriteLine();
+
+            Console.WriteLine("Ejecución ApartadoE:");
+            ApartadoE.ApartadoE.MainE();
             Console.WriteLine();
             Console.WriteLine();
         }

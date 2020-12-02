@@ -5,30 +5,47 @@ using System.Threading.Tasks;
 
 namespace ApartadoD
 {
-    public enum Color { Rojo, Verde, Azul };
+    public enum Color { Rojo, Verde, Azul, Morado, Lila };
 
     static class ApartadoD
     {
         public static void MainD()
         {
-            List<Tuple<Provincia, Color>> sol;
-            List<Tuple<Provincia, Color>> sol1;
-            List<Color> colores1 = new List<Color>() { Color.Rojo, Color.Verde, Color.Azul };
-            List<Color> colores2 = new List<Color>() { Color.Rojo, Color.Verde};
+            List<Tuple<Provincia, Color>> sol;            
+            String opcion;
 
             Console.WriteLine("Quieres introducir una provincia?(s/n)");
-            String opcion = Console.ReadLine();
-            if(opcion == "s")
+            opcion = Console.ReadLine();
+
+            if (opcion == "s")
             {
-                introducirRectangulos();
-            }
-            else
-            {
-                introducirColores();
+                IntroducirRectangulos();
             }
 
+            Console.WriteLine();
+            Console.WriteLine("Lista de provincias: ");
+            provs.ForEach(i => Console.WriteLine(i));
 
-            sol = SolucionColorear(new Tuple<Mapa, List<Color>>(andalucia, colores1));
+            IntroducirColores();
+
+            // Inicializacion de variables globales
+            fronteras = EncontrarFronteras(provs);
+
+            Console.WriteLine();
+            Console.WriteLine("Creacion de Andalucia: ");
+            andalucia = CrearMapa(provs);
+
+            Console.WriteLine();
+            Console.WriteLine("Creacion de Andalucia con provincias solapadas: ");
+            andaluciaSolapada = CrearMapa(provsSolpada); // Lanza excepcion controlada
+
+            // Encontrar solucion
+            sol = SolucionColorear(new Tuple<Mapa, List<Color>>(andalucia, coloresElejidos));
+
+            // Pintar mosaico con solucion
+            Console.WriteLine();
+            Console.WriteLine("Mosaico de Andalucia: ");
+            Console.WriteLine();
 
             List<List<Char>> mosaicoInicial = MosaicoInicial();
 
@@ -41,6 +58,8 @@ namespace ApartadoD
             DibujarMosaico(mosaicoSol);
 
         }
+
+        // VARIABLES GLOBALES
 
         public static readonly int MAXIMOX = 16;
         public static readonly int MAXIMOY = 8;
@@ -58,44 +77,113 @@ namespace ApartadoD
         static public List<Provincia> provs = new List<Provincia>() { prov1, prov2, prov3, prov4, prov5, prov6, prov7, prov8 };
         static public List<Provincia> provsSolpada = new List<Provincia>() { prov1, prov2, prov3, prov4, prov5, prov6, prov7, prov8, provSolapada };
 
-        static public Dictionary<Provincia, List<Provincia>> fronteras = EncontrarFronteras(provs);
+        static public Dictionary<Provincia, List<Provincia>> fronteras;
 
-        static public Mapa andalucia = CrearMapa(provs);
-        static public Mapa andaluciaSolapada = CrearMapa(provsSolpada);
+        static public Mapa andalucia;
+        static public Mapa andaluciaSolapada;
 
-        public static void introducirRectangulos()
+        static public List<Color> coloresDisponibles = new List<Color>() { Color.Rojo, Color.Verde, Color.Azul, Color.Morado, Color.Lila };
+        static public List<Color> coloresElejidos;
+
+
+        /////////////////////////////////////////////////////
+
+
+        public static void IntroducirRectangulos()
         {
             int xSup, ySup, xInf, yInf;
-            String name;
+            String name, opcion;
             Provincia p;
-            List<Provincia> lp = new List<Provincia>();
+
             Console.WriteLine("Introduce la coordenada xSup de una provincia:");
             xSup = Convert.ToInt32(Console.ReadLine());
+
             Console.WriteLine("Introduce la coordenada ySup de una provincia:");
             ySup = Convert.ToInt32(Console.ReadLine());
+
             Console.WriteLine("Introduce la coordenada xInf de una provincia:");
             xInf = Convert.ToInt32(Console.ReadLine());
+
             Console.WriteLine("Introduce la coordenada yInf de una provincia:");
             yInf = Convert.ToInt32(Console.ReadLine());
+
             Console.WriteLine("Introduce el nombre de la provincia:");
             name = Console.ReadLine();
 
             p = new Provincia(xSup, ySup, xInf, yInf, name);
-            lp.AddRange(andalucia.provincias);
-            lp.Add(p);
-            // comprobamos solapados
-            // si va bien lo metemos en andalucia-provs y en provs y preguntamos si quiere introducir mas
-                    // si llamamos otra vez a la funcion
-                    // no llamamos a colores
-            // si va mal decimos esta mal y volvemos a llamar a la función
 
+            provs.Add(p);
+
+            if (CuadradosSolapados(provs))
+            {
+                provs.RemoveAt(provs.Count - 1);
+                Console.WriteLine("ERROR: La provincia \"{0}\" NO ha sido introducida", p.Nombre);
+            }
+            else
+            {
+                Console.WriteLine("EXITO: La provincia \"{0}\" ha sido introducida", p.Nombre);
+            }
+
+            Console.WriteLine("Quieres introducir otra provincia?(s/n)");
+            opcion = Console.ReadLine();
+
+            if (opcion == "s")
+                IntroducirRectangulos();
 
         }
 
-        public static void introducirColores()
+        public static void IntroducirColores()
         {
-            // numero de colores y algo con esto para hacer la funcion en el main no se XD
+            int numeroColores = 0;
+
+            Console.WriteLine();
+            Console.WriteLine("<< Eleccion de colores >>");
+            Console.WriteLine("Colores disponibles: ");
+
+            foreach (string colorEnum in Enum.GetNames(typeof(Color)))
+            {
+                Console.Write(colorEnum + " | ");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Elije el numero de colores que quieres: ");
+
+            numeroColores = Convert.ToInt32(Console.ReadLine());
+
+            if (numeroColores > coloresDisponibles.Count || numeroColores <= 1)
+            {
+                do
+                {
+                    Console.WriteLine("ERROR: El numero de colores introducido es incorrecto.");
+                    Console.WriteLine();
+                    Console.WriteLine("Elije el numero de colores que quieres: ");
+
+                    numeroColores = Convert.ToInt32(Console.ReadLine());
+
+                } while (numeroColores > coloresDisponibles.Count || numeroColores <= 1);
+            }
+                
+            if (numeroColores != coloresDisponibles.Count)
+            {
+                coloresElejidos = new List<Color>();
+
+                for (int i = 0; i < numeroColores; i++)
+                {
+                    coloresElejidos.Add(coloresDisponibles[i]);
+                }
+            }
+            else
+            {
+                coloresElejidos = coloresDisponibles;
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Lista de colores elejidos: ");
+            coloresElejidos.ForEach(i => Console.WriteLine(i));
+
         }
+
+        /////////////////////////////////////////////////////
 
         public static Mapa CrearMapa(List<Provincia> provincias)
         {
@@ -103,10 +191,11 @@ namespace ApartadoD
             try
             {
                 mapa = new Mapa(provincias, fronteras);
+                Console.WriteLine("EXITO: Mapa creado");
             }
             catch(CuadradosSolapadosException e)
             {
-                Console.WriteLine("CuadradosSolapadosException: " + e.Message);
+                Console.WriteLine("ERROR: CuadradosSolapadosException: " + e.Message);
             }
             return mapa;
         }
@@ -218,10 +307,14 @@ namespace ApartadoD
 
             if (t.Item1.provincias.Count != 1)
             {
+                // Llamada recursiva
                 Coloreado2 = Coloreados(new Tuple<Mapa, List<Color>>(new Mapa(t.Item1.provincias.GetRange(1, t.Item1.provincias.Count-1), fronteras), t.Item2));
             }
             else
+            {
+                // Llamada recursiva
                 Coloreado2 = Coloreados(new Tuple<Mapa, List<Color>>(new Mapa(new List<Provincia>(), fronteras), t.Item2));
+            }
 
             List<List<Tuple<Provincia, Color>>> res = new List<List<Tuple<Provincia, Color>>>();
 
@@ -277,9 +370,9 @@ namespace ApartadoD
         }
 
         // solucionColorear
-        public static List<Tuple<Provincia, Color>> SolucionColorear (Tuple<Mapa, List<Color>> lista)
+        public static List<Tuple<Provincia, Color>> SolucionColorear (Tuple<Mapa, List<Color>> tupla)
         {
-            return Coloreados(lista)[0];
+            return Coloreados(tupla)[0];
         }
 
         //-----------------------------MOSAICOS-----------------------------//
@@ -352,6 +445,12 @@ namespace ApartadoD
                             case (Color) 2: // Azul
                                 aux.Add('a');
                                 break;
+                            case (Color) 3: // Morado
+                                aux.Add('m');
+                                break;
+                            case (Color) 4: // Lila
+                                aux.Add('l');
+                                break;
                         }
                     }
                     else
@@ -369,7 +468,56 @@ namespace ApartadoD
         {
             Console.WriteLine("---------------------------");
         }
-        
+
+        /////////////////////////////////////////////////////
+
+        public static Boolean CuadradosSolapados(List<Provincia> provincias)
+        {
+            Boolean res = false;
+            List<Tuple<int, int>> list1, list2;
+            foreach (Provincia p1 in provincias)
+            {
+                foreach (Provincia p2 in provincias)
+                {
+                    if (p1.Nombre == p2.Nombre) continue;
+                    list1 = creaL(p1.CoordenadaXSup + 1, p1.CoordenadaXInf - 1, p1.CoordenadaYSup + 1, p1.CoordenadaYInf - 1);
+                    list2 = creaL(p2.CoordenadaXSup, p2.CoordenadaXInf, p2.CoordenadaYSup, p2.CoordenadaYInf);
+                    res = res || (MatchesTuple(list1, list2) > 0);
+                }
+            }
+            return res;
+        }
+
+        public static List<Tuple<int, int>> creaL(int xSup, int xInf, int ySup, int yInf)
+        {
+            List<Tuple<int, int>> listRes = new List<Tuple<int, int>>();
+            for (int i = xSup; i <= xInf; i++)
+            {
+                for (int j = ySup; j <= yInf; j++)
+                {
+                    listRes.Add(new Tuple<int, int>(i, j));
+                }
+            }
+            return listRes;
+        }
+
+        public static int MatchesTuple(List<Tuple<int, int>> l1, List<Tuple<int, int>> l2)
+        {
+            int cont = 0;
+
+            foreach (Tuple<int, int> n1 in l1)
+            {
+                foreach (Tuple<int, int> n2 in l2)
+                {
+                    if (n1.Equals(n2)) cont++;
+                }
+            }
+
+            return cont;
+        }
+
+        /////////////////////////////////////////////////////
+
         public class Provincia
         {
             private int coordenadaYSup;
@@ -397,7 +545,6 @@ namespace ApartadoD
             {
                 return this.Nombre.ToString();
             }
-
         }
 
         public class Mapa
@@ -416,50 +563,6 @@ namespace ApartadoD
                     this.provincias = provincias;
                     this.fronteras = fronteras;
                 }
-            }
-            public Boolean CuadradosSolapados(List<Provincia> provincias)
-            {
-                Boolean res = false;
-                List<Tuple<int, int>> list1, list2;
-                foreach (Provincia p1 in provincias)
-                {
-                    foreach (Provincia p2 in provincias)
-                    {
-                        if (p1.Nombre == p2.Nombre) continue;
-                        list1 = creaL(p1.CoordenadaXSup + 1, p1.CoordenadaXInf - 1, p1.CoordenadaYSup + 1, p1.CoordenadaYInf - 1);
-                        list2 = creaL(p2.CoordenadaXSup, p2.CoordenadaXInf, p2.CoordenadaYSup, p2.CoordenadaYInf);
-                        res = res || (MatchesTuple(list1, list2) > 0);
-                    }
-                }
-                return res;
-            }
-
-            public List<Tuple<int,int>> creaL(int xSup, int xInf, int ySup, int yInf)
-            {
-                List<Tuple<int, int>> listRes = new List<Tuple<int, int>>();
-                for(int i = xSup; i <= xInf; i++)
-                {
-                    for (int j = ySup; j <= yInf; j++)
-                    {
-                        listRes.Add(new Tuple<int, int>(i, j));
-                    }
-                }
-                return listRes;
-            }
-
-            public static int MatchesTuple(List<Tuple<int, int>> l1, List<Tuple<int, int>> l2)
-            {
-                int cont = 0;
-
-                foreach (Tuple<int, int> n1 in l1)
-                {
-                    foreach (Tuple<int, int> n2 in l2)
-                    {
-                        if (n1.Equals(n2)) cont++;
-                    }
-                }
-
-                return cont;
             }
         }
         public class CuadradosSolapadosException : Exception

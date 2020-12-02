@@ -46,6 +46,9 @@
     <Compile Include="ApartadoBMutable.cs" />
     <Compile Include="ApartadoBInmutable.cs" />
     <Compile Include="ApartadoA.cs" />
+    <Compile Include="ApartadoC.cs" />
+    <Compile Include="ApartadoE.cs" />
+    <Compile Include="ApartadoD.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

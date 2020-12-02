@@ -9,7 +9,7 @@ import ApartadoE.ApartadoE
 main :: IO ()
 main = do
     -- mainA
-    mainB
+    -- mainB
     -- mainC
     -- mainD
-    -- mainE
+    mainE

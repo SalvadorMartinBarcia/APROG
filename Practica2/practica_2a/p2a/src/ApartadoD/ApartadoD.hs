@@ -241,7 +241,7 @@ module ApartadoD.ApartadoD where
     -- Quieres introducir una o más provincias? (s/n)
     -- s
     -- Introduce una provincia:
-    -- Rect 0 0 5 2 "MADRIZ"        
+    -- Rect 0 0 5 2 "Madrid"        
     -- "ERROR - Provincias solapadas"
     -- Introduce una provincia:
     -- Rect 0 0 5 1 "Madrid"        

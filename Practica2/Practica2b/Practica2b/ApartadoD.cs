@@ -58,6 +58,85 @@ namespace ApartadoD
             DibujarMosaico(mosaicoSol);
 
         }
+        /*
+            Ejecución ApartadoD:
+            Quieres introducir una provincia?(s/n)
+            s
+            Introduce la coordenada xSup de una provincia:
+            1
+            Introduce la coordenada ySup de una provincia:
+            1
+            Introduce la coordenada xInf de una provincia:
+            5
+            Introduce la coordenada yInf de una provincia:
+            4
+            Introduce el nombre de la provincia:
+            Madrid
+            ERROR: La provincia "Madrid" NO ha sido introducida
+            Quieres introducir otra provincia?(s/n)
+            s
+            Introduce la coordenada xSup de una provincia:
+            0
+            Introduce la coordenada ySup de una provincia:
+            0
+            Introduce la coordenada xInf de una provincia:
+            5
+            Introduce la coordenada yInf de una provincia:
+            1
+            Introduce el nombre de la provincia:
+            Madrid
+            EXITO: La provincia "Madrid" ha sido introducida
+            Quieres introducir otra provincia?(s/n)
+            n
+
+            Lista de provincias:
+            Huelva
+            Sevilla
+            Cordoba
+            Jaen
+            Cadiz
+            Malaga
+            Granada
+            Almeria
+            Madrid
+
+            << Eleccion de colores >>
+            Colores disponibles:
+            Rojo | Verde | Azul | Morado | Lila |
+            Elije el numero de colores que quieres:
+            3
+
+            Lista de colores elejidos:
+            Rojo
+            Verde
+            Azul
+
+            Creacion de Andalucia:
+            EXITO: Mapa creado
+
+            Creacion de Andalucia con provincias solapadas:
+            ERROR: CuadradosSolapadosException: Error, cuadrados solapados
+
+            Mosaico de Andalucia:
+
+            ................
+            ................
+            ................
+            ................
+            ................
+            ................
+            ................
+            ................
+            ---------------------------
+            ................
+            .rrrrrvv........
+            .vvaaavvrrrr....
+            .vvaaavvrrrr....
+            .vvaaavvrrrrvv..
+            ....rr..rrrrvv..
+            ....rraaaaaavvrr
+            ....rraaaaaa..rr
+         */
 
         // VARIABLES GLOBALES
 

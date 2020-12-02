@@ -35,6 +35,11 @@ namespace ApartadoA
             }
         }
 
+        /*
+            Ejecución ApartadoA:
+            (Al, Verde), (Ca, Azul), (Co, Azul), (Gr, Rojo), (Ja, Verde), (Hu, Verde), (Ma, Verde), (Se, Rojo), (Al, Rojo), (Ca, Rojo),
+        */
+
         static Mapa Andalucia = new Mapa(new List<Provincia>(){     Provincia.Al,
                                                                     Provincia.Ca,
                                                                     Provincia.Co,

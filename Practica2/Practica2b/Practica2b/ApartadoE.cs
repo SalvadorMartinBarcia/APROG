@@ -12,27 +12,6 @@ namespace ApartadoE
         public static void MainE()
         {
 
-            //fronteras = EncontrarFronteras(regs);
-
-            ////foreach (KeyValuePair<Region, List<Region>> kvp in fronteras)
-            ////{
-            ////    Console.WriteLine("Key = {0}", kvp.Key);
-            ////    kvp.Value.ForEach(i => Console.WriteLine(i));
-
-            ////    Console.WriteLine();
-            ////}
-
-            ////Console.WriteLine(CompruebaVecinos(regs));
-
-            //List<Tuple<Region, Color>> sol = SolucionColorear(new Tuple<Mapa, List<Color>>(CrearMapa(regs), new List<Color>() { Color.Rojo, Color.Verde, Color.Azul, Color.Morado }));
-
-            //foreach (var obj in sol)
-            //{
-            //    Console.Write(obj + ", ");
-            //}
-
-            /////////////////////////////////////
-
             List<Tuple<Region, Color>> sol;
             
             IntroducirRegiones();
@@ -73,6 +52,113 @@ namespace ApartadoE
             DibujarMosaico(mosaicoSol);
 
         }
+        /*
+            Ejecución ApartadoE:
+            Introduccion de provincias de la region:
+            Introduce la coordenada xSup de una provincia:
+            0
+            Introduce la coordenada ySup de una provincia:
+            0
+            Introduce la coordenada xInf de una provincia:
+            2
+            Introduce la coordenada yInf de una provincia:
+            1
+            Introduce el nombre de la provincia:
+            p1
+            Quieres introducir otra provincia?(s/n)
+            s
+            Introduce la coordenada xSup de una provincia:
+            2
+            Introduce la coordenada ySup de una provincia:
+            0
+            Introduce la coordenada xInf de una provincia:
+            5
+            Introduce la coordenada yInf de una provincia:
+            1
+            Introduce el nombre de la provincia:
+            p2
+            Quieres introducir otra provincia?(s/n)
+            n
+            Introduce el nombre de la nueva region:
+            r1
+            EXITO: La region "r1" ha sido introducida
+            Quieres introducir otra region?(s/n)
+            s
+            Introduccion de provincias de la region:
+            Introduce la coordenada xSup de una provincia:
+            0
+            Introduce la coordenada ySup de una provincia:
+            0
+            Introduce la coordenada xInf de una provincia:
+            2
+            Introduce la coordenada yInf de una provincia:
+            2
+            Introduce el nombre de la provincia:
+            p3
+            Quieres introducir otra provincia?(s/n)
+            s
+            Introduce la coordenada xSup de una provincia:
+            2
+            Introduce la coordenada ySup de una provincia:
+            0
+            Introduce la coordenada xInf de una provincia:
+            5
+            Introduce la coordenada yInf de una provincia:
+            1
+            Introduce el nombre de la provincia:
+            p4
+            Quieres introducir otra provincia?(s/n)
+            n
+            Introduce el nombre de la nueva region:
+            r2
+            ERROR: La region "r2" NO ha sido introducida
+            Quieres introducir otra region?(s/n)
+            n
+
+            Lista de regiones:
+            reg1
+            reg2
+            reg3
+            r1
+
+            << Eleccion de colores >>
+            Colores disponibles:
+            Rojo | Verde | Azul | Morado | Lila |
+            Elije el numero de colores que quieres:
+            4
+
+            Lista de colores elejidos:
+            Rojo
+            Verde
+            Azul
+            Morado
+
+            Creacion de Andalucia:
+            EXITO: Mapa creado
+
+            Creacion de Andalucia con regiones solapadas:
+            EXITO: Mapa creado
+
+            Mosaico de Andalucia:
+
+            ................
+            ................
+            ................
+            ................
+            ................
+            ................
+            ................
+            ................
+            ---------------------------
+            ................
+            .rrrrrvv........
+            .aaaaavvvvvv....
+            .aaaaavvvvvv....
+            .aaaaavvvvvvrr..
+            ....rr..vvvvrr..
+            ....rrrrrrrrrrrr
+            ....rrrrrrrr..rr
+        */
 
         // VARIABLES GLOBALES
 

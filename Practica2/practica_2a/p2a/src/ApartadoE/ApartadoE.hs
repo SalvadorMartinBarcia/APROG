@@ -283,25 +283,23 @@ module ApartadoE.ApartadoE where
     mainE :: IO()
     mainE = do
         
-        print (compruebaVecinosRegs regs)
-        -- print ("----------------------Ejecucion ApartadoE------------------------------------------")
-        -- print ("Ejemplo con Regiones no solapadas")
-        -- dibujarMosaico (territorio regs colores)
+        print ("----------------------Ejecucion ApartadoE------------------------------------------")
+        print ("Ejemplo con Regiones no solapadas")
+        dibujarMosaico (territorio regs colores)
 
-        -- mostrarSeparador
+        mostrarSeparador
 
-        -- print ("Ejemplo con Regiones solapadas")
-        -- dibujarMosaico (territorio regsExtra colores)
+        print ("Ejemplo con Regiones solapadas")
+        dibujarMosaico (territorio regsExtra colores)
 
-        -- putStrLn "\nQuieres introducir una o más regiones? (s/n)"
-        -- opcion <- getLine
+        putStrLn "\nQuieres introducir una o más regiones? (s/n)"
+        opcion <- getLine
 
-        -- if opcion == "s" then do
-        --     introducirRegiones regs
-        -- else
-        --     introducirColores regs
+        if opcion == "s" then do
+            introducirRegiones regs
+        else
+            introducirColores regs
 
-    -- Reg [Rect 1 1 1 1 "x", Rect 2 2 2 2 "sdf"] "dfa"
     ----------------------Ejecucion ApartadoE------------------------------------------
     -- "Ejemplo con Regiones no solapadas"
     -- ................

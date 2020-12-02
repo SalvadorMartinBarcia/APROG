@@ -12,3 +12,10 @@ C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\
 C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.csproj.CoreCompileInputs.cache
 C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.exe
 C:\Users\Borja\Desktop\APROG\practicas\Practica\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.pdb
+C:\Users\VSPC-EternalStormV2\Documents\APROG\APROG\Practica2\Practica2b\Practica2b\bin\Debug\Practica2b.exe.config
+C:\Users\VSPC-EternalStormV2\Documents\APROG\APROG\Practica2\Practica2b\Practica2b\bin\Debug\Practica2b.exe
+C:\Users\VSPC-EternalStormV2\Documents\APROG\APROG\Practica2\Practica2b\Practica2b\bin\Debug\Practica2b.pdb
+C:\Users\VSPC-EternalStormV2\Documents\APROG\APROG\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.csprojAssemblyReference.cache
+C:\Users\VSPC-EternalStormV2\Documents\APROG\APROG\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.csproj.CoreCompileInputs.cache
+C:\Users\VSPC-EternalStormV2\Documents\APROG\APROG\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.exe
+C:\Users\VSPC-EternalStormV2\Documents\APROG\APROG\Practica2\Practica2b\Practica2b\obj\Debug\Practica2b.pdb

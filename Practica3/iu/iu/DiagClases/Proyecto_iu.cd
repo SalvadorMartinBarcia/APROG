@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="iu.Program">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iu.InterfazVentanas">
+    <Position X="7.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAEAAAAAAAAIAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>InterfazVentanas.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iu.InterfazConsola">
+    <Position X="1.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAIAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>InterfazConsola.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iu.Interfaz">
+    <Position X="5.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEACAAAAAAIAgAAAAEAAAABAAA=</HashCode>
+      <FileName>Interfaz.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iu.Calculadora">
+    <Position X="4.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAA4AAAAEHAAAAEAAAA=</HashCode>
+      <FileName>Calculadora.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

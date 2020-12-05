@@ -2,7 +2,7 @@
 using static System.Console;
 using System.Windows.Forms;
 
-namespace iu
+namespace Practica3
 {
     static class Program
     {

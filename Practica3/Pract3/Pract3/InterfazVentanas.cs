@@ -1,13 +1,17 @@
 ﻿using System.Windows.Forms;
 
-namespace iu
+namespace Practica3
 {
     public class InterfazVentanas : Interfaz
     {
-        Calculadora form;
-        public InterfazVentanas() => this.form = new Calculadora(this);
-        public override void IntroducirNumero() => this.form.ShowDialog();
-        public override void RealizarOperacion() 
+        //Calculadora form;
+        //public InterfazVentanas() => this.form = new Calculadora(this);
+
+        //public override void IntroducirNumero() => this.form.ShowDialog();
+
+        public override void IntroducirNumero() { }
+
+        public override void RealizarOperacion()
         {
             // sin código pues la operación se realiza al pulsar el botón "Operar"
         }

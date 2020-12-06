@@ -1,5 +1,5 @@
 ﻿
-namespace Practica3
+namespace Pract3
 {
     public abstract class Interfaz
     {

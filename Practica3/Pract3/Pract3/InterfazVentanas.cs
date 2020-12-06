@@ -1,15 +1,15 @@
 ﻿using System.Windows.Forms;
 
-namespace Practica3
+namespace Pract3
 {
     public class InterfazVentanas : Interfaz
     {
-        //Calculadora form;
-        //public InterfazVentanas() => this.form = new Calculadora(this);
+        Coloreador form;
+        public InterfazVentanas() => this.form = new Coloreador();
 
-        //public override void IntroducirNumero() => this.form.ShowDialog();
+        public override void IntroducirNumero() => this.form.ShowDialog();
 
-        public override void IntroducirNumero() { }
+        //public override void IntroducirNumero() { }
 
         public override void RealizarOperacion()
         {
@@ -17,8 +17,9 @@ namespace Practica3
         }
         public override bool ConfirmarContinuacion()
         {
-            DialogResult resultado = MessageBox.Show("¿Repetir?", "Confirmar continuación", MessageBoxButtons.YesNo);
-            return (resultado == DialogResult.Yes);
+            //DialogResult resultado = MessageBox.Show("¿Repetir?", "Confirmar continuación", MessageBoxButtons.YesNo);
+            //return (resultado == DialogResult.Yes);
+            return false;
         }
     }
 }

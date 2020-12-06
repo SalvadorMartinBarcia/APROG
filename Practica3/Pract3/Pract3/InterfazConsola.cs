@@ -1,7 +1,7 @@
 ﻿using System;
 using static System.Console;
 
-namespace Practica3
+namespace Pract3
 {
     public class InterfazConsola : Interfaz
     {

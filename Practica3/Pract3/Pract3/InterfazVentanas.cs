@@ -5,11 +5,11 @@ namespace Pract3
     public class InterfazVentanas : Interfaz
     {
         Coloreador form;
-        public InterfazVentanas() => this.form = new Coloreador();
-
-        public override void IntroducirNumero() => this.form.ShowDialog();
-
-        //public override void IntroducirNumero() { }
+        public InterfazVentanas()
+        {
+            this.form = new Coloreador();
+            this.form.ShowDialog();
+        }
 
         public override void RealizarOperacion()
         {

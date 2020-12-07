@@ -23,6 +23,7 @@ namespace Pract3
                 //else i = new InterfazVentanas();
 
                 i = new InterfazVentanas();
+                // i = new InterfazConsola();
 
                 i.Interaccionar();
             //    WriteLine("Repetir consola-ventanas (s/n)");

@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApartadoDVentana.cs" />
+    <Compile Include="ApartadoDConsola.cs" />
     <Compile Include="Coloreador.cs">
       <SubType>Form</SubType>
     </Compile>

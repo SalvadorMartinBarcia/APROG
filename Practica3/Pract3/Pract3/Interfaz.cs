@@ -7,12 +7,10 @@ namespace Pract3
         public void Interaccionar() 
         {
             do {
-                IntroducirNumero();
                 RealizarOperacion();
             } while (ConfirmarContinuacion());
         }
         public int Operacion() => Numero * Numero;
-        public abstract void IntroducirNumero();
         public abstract void RealizarOperacion();
         public abstract bool ConfirmarContinuacion();
     }

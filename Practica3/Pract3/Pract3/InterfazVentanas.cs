@@ -5,9 +5,10 @@ namespace Pract3
     public class InterfazVentanas : Interfaz
     {
         Coloreador form;
-        public InterfazVentanas()
+
+        public InterfazVentanas(int dimension)
         {
-            this.form = new Coloreador();
+            this.form = new Coloreador(dimension);
             this.form.ShowDialog();
         }
 

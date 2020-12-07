@@ -13,22 +13,25 @@
             base.Dispose(disposing);
         }
 
-        private void crearBoton(int x, int y, string nombre, int tabIndex)
+        private void crearBoton(int x, int y, int tabIndex)
         {
             System.Windows.Forms.Button b = new System.Windows.Forms.Button();
 
             this.tableLayoutPanel1.Controls.Add(b, x, y);
             b.Dock = System.Windows.Forms.DockStyle.Fill;
-            b.Name = nombre;
+            b.BackColor = System.Drawing.Color.White;
             b.TabIndex = tabIndex;
-            b.Text = nombre;
-            b.UseVisualStyleBackColor = true;
+
+            b.TabStop = false;
+            b.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            b.FlatAppearance.BorderSize = 0;
+
+            // b.UseVisualStyleBackColor = true;
             b.Click += new System.EventHandler(this.button_Click);
         }
 
         private void InitializeComponent()
         {
-            int dimension = 10;
 
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
@@ -57,7 +60,7 @@
 
             for (int i = (dimension - 1); i >= 0; i--)    // CREAMOS LOS BOTONES
                 for (int j = (dimension - 1); j >= 0; j--)
-                    this.crearBoton(j, i, "X", i * dimension + j);
+                    this.crearBoton(j, i, i * dimension + j);
 
             // 
             // Coloreador

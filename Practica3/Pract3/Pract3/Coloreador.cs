@@ -16,12 +16,14 @@ namespace Pract3
         TableLayoutPanelCellPosition pos1, pos2;
 
         int cont = 0;
+        int dimension;
         bool primerClick = false;
 
         //-------------------------------------------------------//
 
-        public Coloreador()
+        public Coloreador(int dimension)
         {
+            this.dimension = dimension;
             InitializeComponent();
         }
 
@@ -37,38 +39,51 @@ namespace Pract3
             }
             else // Segunda coordenada seleccionada
             {
-                primerClick = false;
-                ctrl.BackColor = Color.Aqua;
-
                 pos2 = this.tableLayoutPanel1.GetCellPosition((Control)sender);
 
-                cont++;
+                if (pos2.Row < pos1.Row || pos2.Column < pos1.Column)
+                {
+                    this.tableLayoutPanel1.GetControlFromPosition(pos1.Column, pos1.Row).BackColor = Control.DefaultBackColor;
+                }
+                else
+                {
+                    ctrl.BackColor = Color.Aqua;
 
-                ApartadoDVentana.Provincia prov = new ApartadoDVentana.Provincia(   pos1.Column, 
-                                                                                    pos1.Row, 
-                                                                                    pos2.Column+1, 
-                                                                                    pos2.Row+1,
-                                                                                    cont.ToString());
-                // Meter provincia en la lista
-                ApartadoDVentana.provs.Add(prov);
+                    ApartadoDVentana.Provincia prov = new ApartadoDVentana.Provincia(pos1.Column,
+                                                                                        pos1.Row,
+                                                                                        pos2.Column + 1,
+                                                                                        pos2.Row + 1,
+                                                                                        cont.ToString());
+                    cont++;
+                    // Meter provincia en la lista
+                    ApartadoDVentana.provs.Add(prov);
 
-                // Comprobar solapados
+                    // Comprobar solapados
+                    if (ApartadoDVentana.CuadradosSolapados(ApartadoDVentana.provs))
+                    {
+                        ApartadoDVentana.provs.RemoveAt(ApartadoDVentana.provs.Count - 1);
+                        Console.WriteLine("ERROR: La provincia \"{0}\" NO ha sido introducida", prov.Nombre);
 
-                // Encontrar fronteras
-                ApartadoDVentana.fronteras = ApartadoDVentana.EncontrarFronteras(ApartadoDVentana.provs);
+                        this.tableLayoutPanel1.GetControlFromPosition(pos1.Column, pos1.Row).BackColor = Color.White;
 
-                // Creamos Mapa
-                ApartadoDVentana.andalucia = ApartadoDVentana.CrearMapa(ApartadoDVentana.provs);
-                
-                // Encontrar solucion
-                sol = ApartadoDVentana.SolucionColorear(
-                    new Tuple<ApartadoDVentana.Mapa, List<ColorProvincia>>( ApartadoDVentana.andalucia, 
-                                                                            ApartadoDVentana.coloresDisponibles));
-                // Pintar la nueva provincia en mapa
-                FuncionIntroducirProvincias(sol);
+                    }
+                    else
+                    {
+                        // Encontrar fronteras
+                        ApartadoDVentana.fronteras = ApartadoDVentana.EncontrarFronteras(ApartadoDVentana.provs);
 
-                // Mostrar Nuevo mapa
+                        // Creamos Mapa
+                        ApartadoDVentana.andalucia = new ApartadoDVentana.Mapa(ApartadoDVentana.provs, ApartadoDVentana.fronteras);
 
+                        // Encontrar solucion
+                        sol = ApartadoDVentana.SolucionColorear(
+                            new Tuple<ApartadoDVentana.Mapa, List<ColorProvincia>>(ApartadoDVentana.andalucia,
+                                                                                    ApartadoDVentana.coloresDisponibles));
+                        // Pintar la nueva provincia en mapa
+                        FuncionIntroducirProvincias(sol);
+                    }
+                }
+                primerClick = false;
             }
         }
 
@@ -81,10 +96,6 @@ namespace Pract3
                 {
                     for (int j = t.Item1.CoordenadaYSup; j < t.Item1.CoordenadaYInf; j++)
                     {
-                        if (t.Item2 == ColorProvincia.Rojo)
-                        {
-
-                        }
                         switch (t.Item2)
                         {
                             case ColorProvincia.Rojo: // Rojo
@@ -103,6 +114,7 @@ namespace Pract3
                                 this.tableLayoutPanel1.GetControlFromPosition(i, j).BackColor = Color.LightPink;
                                 break;
                         }
+                        this.tableLayoutPanel1.GetControlFromPosition(i, j).Enabled = false;
                     }
                 }
                 

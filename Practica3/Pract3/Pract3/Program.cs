@@ -1,5 +1,4 @@
 ﻿using System;
-using static System.Console;
 using System.Windows.Forms;
 
 namespace Pract3
@@ -11,28 +10,26 @@ namespace Pract3
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            do
+
+            Console.WriteLine("Elige una ejecucion de un apartado:");
+            Console.WriteLine("1. ApartadoB");
+            Console.WriteLine("2. ApartadoC");
+            Console.WriteLine("3. ApartadoD");
+
+            string opcion = Console.ReadLine();
+
+            if (opcion == "1")
             {
-                WriteLine("Introduce modo interaccion");
-                WriteLine("     1. Consola");
-                WriteLine("     2. Ventanas");
-                string modo = Console.ReadLine();
-                Interfaz i;
-                if (modo == "1")
-                    i = new InterfazConsola();
-                else
-                {
-                    WriteLine("Introduce la dimension del mapa (Recomendable menor que 20)");
-                    
-                    int dimension = Convert.ToInt32(Console.ReadLine());
-                    i = new InterfazVentanas(dimension);
-                }
-
-                i.Interaccionar();
-                WriteLine("Repetir consola-ventanas (s/n)");
-            } while (ReadLine() == "s");
-
-            WriteLine("Final");
+                Console.WriteLine("<<En construccion>>");    
+            }
+            else if (opcion == "2")
+            {
+                ApartadoC.MainC.MainCC();
+            }
+            else
+            {
+                ApartadoD.MainD.MainDD();
+            }
         }
     }
 }

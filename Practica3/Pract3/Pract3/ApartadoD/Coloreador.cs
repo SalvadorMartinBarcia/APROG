@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Pract3
+namespace ApartadoD
 {
     public partial class Coloreador : Form
     {
@@ -89,7 +89,6 @@ namespace Pract3
 
         private void FuncionIntroducirProvincias(List<Tuple<ApartadoDVentana.Provincia, ColorProvincia>> sol)
         {
-
             foreach (Tuple<ApartadoDVentana.Provincia, ColorProvincia> t in sol)
             {
                 for(int i = t.Item1.CoordenadaXSup; i < t.Item1.CoordenadaXInf; i++)
@@ -117,9 +116,7 @@ namespace Pract3
                         this.tableLayoutPanel1.GetControlFromPosition(i, j).Enabled = false;
                     }
                 }
-                
             }
-
         }
     }
 }

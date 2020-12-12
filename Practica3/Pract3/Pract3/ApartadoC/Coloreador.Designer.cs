@@ -1,4 +1,4 @@
-﻿namespace Pract3
+﻿namespace ApartadoC
 {
     partial class Coloreador
     {
@@ -22,12 +22,14 @@
             b.BackColor = System.Drawing.Color.White;
             b.TabIndex = tabIndex;
 
+            b.Enabled = false;
+
             b.TabStop = false;
             b.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             b.FlatAppearance.BorderSize = 0;
 
             // b.UseVisualStyleBackColor = true;
-            b.Click += new System.EventHandler(this.button_Click);
+            // b.Click += new System.EventHandler(this.button_Click);
         }
 
         private void InitializeComponent()
@@ -41,7 +43,9 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.BackColor = System.Drawing.Color.Aquamarine;
-            
+
+            int dimension = 16;
+
             this.tableLayoutPanel1.ColumnCount = dimension;
 
             for (int i = 0; i < dimension; i++)    // ASIGNAMOS ESTILO A CADA COLUMNA 

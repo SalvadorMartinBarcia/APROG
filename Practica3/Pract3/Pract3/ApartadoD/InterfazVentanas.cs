@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Pract3
+namespace ApartadoD
 {
     public class InterfazVentanas : Interfaz
     {

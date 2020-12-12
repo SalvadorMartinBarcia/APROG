@@ -45,25 +45,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApartadoDVentana.cs" />
-    <Compile Include="ApartadoDConsola.cs" />
-    <Compile Include="Coloreador.cs">
+    <Compile Include="ApartadoC\ApartadoCConsola.cs" />
+    <Compile Include="ApartadoC\ApartadoCVentana.cs" />
+    <Compile Include="ApartadoC\Coloreador.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Coloreador.Designer.cs">
+    <Compile Include="ApartadoC\Coloreador.Designer.cs">
       <DependentUpon>Coloreador.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaz.cs" />
-    <Compile Include="InterfazConsola.cs" />
-    <Compile Include="InterfazVentanas.cs" />
+    <Compile Include="ApartadoC\Interfaz.cs" />
+    <Compile Include="ApartadoC\InterfazConsola.cs" />
+    <Compile Include="ApartadoC\InterfazVentanas.cs" />
+    <Compile Include="ApartadoC\MainC.cs" />
+    <Compile Include="ApartadoD\ApartadoDVentana.cs" />
+    <Compile Include="ApartadoD\ApartadoDConsola.cs" />
+    <Compile Include="ApartadoD\Coloreador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApartadoD\Coloreador.Designer.cs">
+      <DependentUpon>Coloreador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApartadoD\Interfaz.cs" />
+    <Compile Include="ApartadoD\InterfazConsola.cs" />
+    <Compile Include="ApartadoD\InterfazVentanas.cs" />
+    <Compile Include="ApartadoD\MainD.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="ApartadoC\App.config" />
+    <None Include="ApartadoD\App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Coloreador.resx">
+    <EmbeddedResource Include="ApartadoC\Coloreador.resx">
+      <DependentUpon>Coloreador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApartadoD\Coloreador.resx">
       <DependentUpon>Coloreador.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

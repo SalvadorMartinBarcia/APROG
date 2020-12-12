@@ -1,5 +1,5 @@
 ﻿
-namespace Pract3
+namespace ApartadoC
 {
     public abstract class Interfaz
     {

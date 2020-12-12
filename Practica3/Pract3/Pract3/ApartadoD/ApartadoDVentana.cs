@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pract3
+namespace ApartadoD
 {
     public enum ColorProvincia { Rojo, Verde, Azul, Morado, Lila };
 

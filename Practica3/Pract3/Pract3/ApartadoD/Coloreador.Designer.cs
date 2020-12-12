@@ -39,7 +39,10 @@
             b.Dock = System.Windows.Forms.DockStyle.Fill;
             b.BackColor = System.Drawing.Color.White;
             b.TabIndex = tabIndex;
-            b.Text = (x + 1).ToString() + " colores";
+            if(x == 0)
+                b.Text = (x + 1).ToString() + "  color";
+            else
+                b.Text = (x + 1).ToString() + "  colores";
             b.TabStop = false;
             b.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             b.FlatAppearance.BorderSize = 0;

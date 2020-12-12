@@ -1,4 +1,4 @@
-﻿namespace ApartadoD
+﻿namespace ApartadoB
 {
     partial class Coloreador
     {
@@ -22,36 +22,20 @@
             b.BackColor = System.Drawing.Color.White;
             b.TabIndex = tabIndex;
 
+            b.Enabled = false;
+
             b.TabStop = false;
             b.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             b.FlatAppearance.BorderSize = 0;
 
-            b.Click += new System.EventHandler(this.button_Click);
-        }
-
-        private void crearBoton2(int x, int y, int tabIndex)
-        {
-            System.Windows.Forms.Button b = new System.Windows.Forms.Button();
-
-            //this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-
-            this.tableLayoutPanel2.Controls.Add(b, x, y);
-            b.Dock = System.Windows.Forms.DockStyle.Fill;
-            b.BackColor = System.Drawing.Color.White;
-            b.TabIndex = tabIndex;
-            b.Text = (x + 1).ToString() + " colores";
-            b.TabStop = false;
-            b.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            b.FlatAppearance.BorderSize = 0;
-
-            b.Click += new System.EventHandler(this.button_Click_Color);
+            // b.UseVisualStyleBackColor = true;
+            // b.Click += new System.EventHandler(this.button_Click);
         }
 
         private void InitializeComponent()
         {
 
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
 
@@ -59,7 +43,9 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.BackColor = System.Drawing.Color.Aquamarine;
-            
+
+            int dimension = 16;
+
             this.tableLayoutPanel1.ColumnCount = dimension;
 
             for (int i = 0; i < dimension; i++)    // ASIGNAMOS ESTILO A CADA COLUMNA 
@@ -81,40 +67,19 @@
                     this.crearBoton(j, i, i * dimension + j);
 
             // 
-            // tableLayoutPanel2
-            //
-            this.tableLayoutPanel2.ColumnCount = 5;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 350);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(800, 100);
-            this.tableLayoutPanel2.TabIndex = 1;
-
-            for (int j = 0; j < 5; j++)
-                this.crearBoton2(j, 0, j);
-
-            // 
             // Coloreador
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.tableLayoutPanel2);
             this.Name = "Coloreador";
             this.Text = "EL TEOREMA DE LOS CUATRO COLORES";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }

@@ -45,6 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApartadoB\ApartadoBConsola.cs" />
+    <Compile Include="ApartadoB\ApartadoBVentana.cs" />
+    <Compile Include="ApartadoB\Coloreador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApartadoB\Coloreador.Designer.cs">
+      <DependentUpon>Coloreador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApartadoB\Interfaz.cs" />
+    <Compile Include="ApartadoB\InterfazConsola.cs" />
+    <Compile Include="ApartadoB\InterfazVentanas.cs" />
+    <Compile Include="ApartadoB\MainB.cs" />
     <Compile Include="ApartadoC\ApartadoCConsola.cs" />
     <Compile Include="ApartadoC\ApartadoCVentana.cs" />
     <Compile Include="ApartadoC\Coloreador.cs">
@@ -73,10 +85,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ApartadoB\App.config" />
     <None Include="ApartadoC\App.config" />
     <None Include="ApartadoD\App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ApartadoB\Coloreador.resx">
+      <DependentUpon>Coloreador.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ApartadoC\Coloreador.resx">
       <DependentUpon>Coloreador.cs</DependentUpon>
     </EmbeddedResource>

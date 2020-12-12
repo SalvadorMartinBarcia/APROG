@@ -3,28 +3,59 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApartadoD
+namespace ApartadoB
 {
     public enum ColorProvincia { Rojo, Verde, Azul, Morado, Lila };
 
-    public static class ApartadoDVentana
+    public static class ApartadoBVentana
     {
-        // VARIABLES GLOBALES
+        /*
+            Ejecución ApartadoB:
+            CuadradosSolapadosException: Error, cuadrados solapados
+            ................
+            ................
+            ................
+            ................
+            ................
+            ................
+            ................
+            ................
+            ---------------------------
+            ................
+            ......rr........
+            .rraaarraaaa....
+            .rraaarraaaa....
+            .rraaarraaaavv..
+            ....vv..aaaavv..
+            ....vvrrrrrrvvrr
+            ....vvrrrrrr..rr
+         */
 
-        static public List<Provincia> provs = new List<Provincia>();
+        public static readonly int MAXIMOX = 16;
+        public static readonly int MAXIMOY = 8;
 
-        static public Dictionary<Provincia, List<Provincia>> fronteras;
+        static public Provincia prov1 = new Provincia(0, 1, 2, 4, "Huelva");
+        static public Provincia prov2 = new Provincia(2, 1, 5, 4, "Sevilla");
+        static public Provincia prov3 = new Provincia(5, 0, 7, 4, "Cordoba");
+        static public Provincia prov4 = new Provincia(7, 1, 11, 5, "Jaen");
+        static public Provincia prov5 = new Provincia(3, 4, 5, 7, "Cadiz");
+        static public Provincia prov6 = new Provincia(5, 5, 11, 7, "Malaga");
+        static public Provincia prov7 = new Provincia(11, 3, 13, 6, "Granada");
+        static public Provincia prov8 = new Provincia(13, 5, 15, 7, "Almeria");
 
-        static public Mapa andalucia;
+        static public List<Provincia> provs = new List<Provincia>() { prov1, prov2, prov3, prov4, prov5, prov6, prov7, prov8 };
 
-        static public List<ColorProvincia> coloresDisponibles = 
-            new List<ColorProvincia>() {    ColorProvincia.Rojo,
-                                            ColorProvincia.Verde,
-                                            ColorProvincia.Azul,
-                                            ColorProvincia.Morado,
-                                            ColorProvincia.Lila };
+        static public Dictionary<Provincia, List<Provincia>> fronteras = EncontrarFronteras(provs);
 
-        /////////////////////////////////////////////////////
+        static public Mapa andalucia = CrearMapa(provs);
+
+        public static Mapa CrearMapa(List<Provincia> provincias)
+        {
+            Mapa mapa = null;
+            mapa = new Mapa(provincias, fronteras);
+            return mapa;
+        }
+
 
         public static Dictionary<Provincia, List<Provincia>> EncontrarFronteras(List<Provincia> provs)
         {
@@ -76,7 +107,7 @@ namespace ApartadoD
         {
             int cont = 0;
 
-            foreach(int n1 in l1)
+            foreach (int n1 in l1)
             {
                 foreach (int n2 in l2)
                 {
@@ -132,14 +163,10 @@ namespace ApartadoD
 
             if (t.Item1.provincias.Count != 1)
             {
-                // Llamada recursiva
-                Coloreado2 = Coloreados(new Tuple<Mapa, List<ColorProvincia>>(new Mapa(t.Item1.provincias.GetRange(1, t.Item1.provincias.Count-1), fronteras), t.Item2));
+                Coloreado2 = Coloreados(new Tuple<Mapa, List<ColorProvincia>>(new Mapa(t.Item1.provincias.GetRange(1, t.Item1.provincias.Count - 1), fronteras), t.Item2));
             }
             else
-            {
-                // Llamada recursiva
                 Coloreado2 = Coloreados(new Tuple<Mapa, List<ColorProvincia>>(new Mapa(new List<Provincia>(), fronteras), t.Item2));
-            }
 
             List<List<Tuple<Provincia, ColorProvincia>>> res = new List<List<Tuple<Provincia, ColorProvincia>>>();
 
@@ -152,8 +179,9 @@ namespace ApartadoD
                     res.AddRange(CreaListasSolucion(ListaDeColores, Coloreado3, t.Item1.provincias[0]));
                 }
             }
-            else
+            else // Coloreado2 = [[]]
             {
+                //[ [ (Co, Rojo):[] ] ,  [ (Co, Azul):[] ], [ (Co, Verde):[] ] ]
                 ListaDeColores = t.Item2;
 
                 List<Tuple<Provincia, ColorProvincia>> listaAux;
@@ -163,7 +191,7 @@ namespace ApartadoD
                     var tupla = new Tuple<Provincia, ColorProvincia>(t.Item1.provincias[0], c);
                     listaAux = new List<Tuple<Provincia, ColorProvincia>>();
                     listaAux.Add(tupla);
-                    
+
                     res.Add(listaAux);
                 }
             }
@@ -171,8 +199,8 @@ namespace ApartadoD
             return res;
         }
 
-        public static List<List<Tuple<Provincia, ColorProvincia>>> CreaListasSolucion(   List<ColorProvincia> listaDeColores, 
-                                                                                List<Tuple<Provincia, ColorProvincia>> Coloreado3, 
+        public static List<List<Tuple<Provincia, ColorProvincia>>> CreaListasSolucion(List<ColorProvincia> listaDeColores,
+                                                                                List<Tuple<Provincia, ColorProvincia>> Coloreado3,
                                                                                 Provincia prov)
         {
             List<Tuple<Provincia, ColorProvincia>> listaAux;
@@ -193,63 +221,13 @@ namespace ApartadoD
             return res;
         }
 
-        public static List<Tuple<Provincia, ColorProvincia>> SolucionColorear (Tuple<Mapa, List<ColorProvincia>> tupla)
+        // solucionColorear
+        public static List<Tuple<Provincia, ColorProvincia>> SolucionColorear(Tuple<Mapa, List<ColorProvincia>> lista)
         {
-            List<List<Tuple<Provincia, ColorProvincia>>> sol = Coloreados(tupla);
-            if (sol.Count == 0)
-                return null;
-            else
-                return sol[0];
+            return Coloreados(lista)[0];
         }
 
-        /////////////////////////////////////////////////////
-
-        public static Boolean CuadradosSolapados(List<Provincia> provincias)
-        {
-            Boolean res = false;
-            List<Tuple<int, int>> list1, list2;
-            foreach (Provincia p1 in provincias)
-            {
-                foreach (Provincia p2 in provincias)
-                {
-                    if (p1.Nombre == p2.Nombre) continue;
-                    list1 = creaL(p1.CoordenadaXSup + 1, p1.CoordenadaXInf - 1, p1.CoordenadaYSup + 1, p1.CoordenadaYInf - 1);
-                    list2 = creaL(p2.CoordenadaXSup, p2.CoordenadaXInf, p2.CoordenadaYSup, p2.CoordenadaYInf);
-                    res = res || (MatchesTuple(list1, list2) > 0);
-                }
-            }
-            return res;
-        }
-
-        public static List<Tuple<int, int>> creaL(int xSup, int xInf, int ySup, int yInf)
-        {
-            List<Tuple<int, int>> listRes = new List<Tuple<int, int>>();
-            for (int i = xSup; i <= xInf; i++)
-            {
-                for (int j = ySup; j <= yInf; j++)
-                {
-                    listRes.Add(new Tuple<int, int>(i, j));
-                }
-            }
-            return listRes;
-        }
-
-        public static int MatchesTuple(List<Tuple<int, int>> l1, List<Tuple<int, int>> l2)
-        {
-            int cont = 0;
-
-            foreach (Tuple<int, int> n1 in l1)
-            {
-                foreach (Tuple<int, int> n2 in l2)
-                {
-                    if (n1.Equals(n2)) cont++;
-                }
-            }
-
-            return cont;
-        }
-
-        /////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////
 
         public class Provincia
         {
@@ -278,6 +256,7 @@ namespace ApartadoD
             {
                 return this.Nombre.ToString();
             }
+
         }
 
         public class Mapa
@@ -287,20 +266,57 @@ namespace ApartadoD
 
             public Mapa(List<Provincia> provincias, Dictionary<Provincia, List<Provincia>> fronteras)
             {
-                if (CuadradosSolapados(provincias))
+                this.provincias = provincias;
+                this.fronteras = fronteras;
+            }
+            public Boolean CuadradosSolapados(List<Provincia> provincias)
+            {
+                Boolean res = false;
+                List<Tuple<int, int>> list1, list2;
+                foreach (Provincia p1 in provincias)
                 {
-                    throw (new CuadradosSolapadosException("Error, cuadrados solapados"));
+                    foreach (Provincia p2 in provincias)
+                    {
+                        if (p1.Nombre == p2.Nombre) continue;
+                        list1 = creaL(p1.CoordenadaXSup + 1, p1.CoordenadaXInf - 1, p1.CoordenadaYSup + 1, p1.CoordenadaYInf - 1);
+                        list2 = creaL(p2.CoordenadaXSup, p2.CoordenadaXInf, p2.CoordenadaYSup, p2.CoordenadaYInf);
+                        res = res || (MatchesTuple(list1, list2) > 0);
+                    }
                 }
-                else
+                return res;
+            }
+
+            public List<Tuple<int, int>> creaL(int xSup, int xInf, int ySup, int yInf)
+            {
+                List<Tuple<int, int>> listRes = new List<Tuple<int, int>>();
+                for (int i = xSup; i <= xInf; i++)
                 {
-                    this.provincias = provincias;
-                    this.fronteras = fronteras;
+                    for (int j = ySup; j <= yInf; j++)
+                    {
+                        listRes.Add(new Tuple<int, int>(i, j));
+                    }
                 }
+                return listRes;
+            }
+
+            public static int MatchesTuple(List<Tuple<int, int>> l1, List<Tuple<int, int>> l2)
+            {
+                int cont = 0;
+
+                foreach (Tuple<int, int> n1 in l1)
+                {
+                    foreach (Tuple<int, int> n2 in l2)
+                    {
+                        if (n1.Equals(n2)) cont++;
+                    }
+                }
+
+                return cont;
             }
         }
         public class CuadradosSolapadosException : Exception
         {
-            public CuadradosSolapadosException(String error) : base(error) {}
+            public CuadradosSolapadosException(String error) : base(error) { }
         }
     }
 }

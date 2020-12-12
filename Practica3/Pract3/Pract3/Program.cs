@@ -20,7 +20,7 @@ namespace Pract3
 
             if (opcion == "1")
             {
-                Console.WriteLine("<<En construccion>>");    
+                ApartadoB.MainB.MainBB();
             }
             else if (opcion == "2")
             {

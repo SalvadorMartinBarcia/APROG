@@ -16,8 +16,10 @@ namespace ApartadoD
         TableLayoutPanelCellPosition pos1, pos2;
 
         int cont = 0;
+        int nColores;
         int dimension;
         bool primerClick = false;
+        List<ColorProvincia> coloresElejidos = null;
 
         //-------------------------------------------------------//
 
@@ -43,7 +45,7 @@ namespace ApartadoD
 
                 if (pos2.Row < pos1.Row || pos2.Column < pos1.Column)
                 {
-                    this.tableLayoutPanel1.GetControlFromPosition(pos1.Column, pos1.Row).BackColor = Control.DefaultBackColor;
+                    this.tableLayoutPanel1.GetControlFromPosition(pos1.Column, pos1.Row).BackColor = Color.White;
                 }
                 else
                 {
@@ -65,6 +67,7 @@ namespace ApartadoD
                         Console.WriteLine("ERROR: La provincia \"{0}\" NO ha sido introducida", prov.Nombre);
 
                         this.tableLayoutPanel1.GetControlFromPosition(pos1.Column, pos1.Row).BackColor = Color.White;
+                        this.tableLayoutPanel1.GetControlFromPosition(pos2.Column, pos2.Row).BackColor = Color.White;
 
                     }
                     else
@@ -73,21 +76,64 @@ namespace ApartadoD
                         ApartadoDVentana.fronteras = ApartadoDVentana.EncontrarFronteras(ApartadoDVentana.provs);
 
                         // Creamos Mapa
-                        ApartadoDVentana.andalucia = new ApartadoDVentana.Mapa(ApartadoDVentana.provs, ApartadoDVentana.fronteras);
+                        try
+                        {
+                            ApartadoDVentana.andalucia = new ApartadoDVentana.Mapa(ApartadoDVentana.provs, ApartadoDVentana.fronteras);
+                        }
+                        catch (ApartadoDVentana.CuadradosSolapadosException error)
+                        {
+                            Console.WriteLine("CuadradosSolapadosException: " + error.Message);
+                        }
 
                         // Encontrar solucion
-                        sol = ApartadoDVentana.SolucionColorear(
-                            new Tuple<ApartadoDVentana.Mapa, List<ColorProvincia>>(ApartadoDVentana.andalucia,
-                                                                                    ApartadoDVentana.coloresDisponibles));
-                        // Pintar la nueva provincia en mapa
-                        FuncionIntroducirProvincias(sol);
+                        imprimirSolucion();
                     }
                 }
                 primerClick = false;
             }
         }
+        private void button_Click_Color(object sender, EventArgs e)
+        {
+            Control ctrl = ((Control)sender);
+            nColores = Convert.ToInt32(ctrl.TabIndex) + 1;
+            for(int i = 0; i < 5; i++)
+            {
+                this.tableLayoutPanel2.GetControlFromPosition(i, 0).BackColor = Color.White;
+            }
+            ctrl.BackColor = Color.Aqua;
+            coloresElejidos = new List<ColorProvincia>();
 
-        private void FuncionIntroducirProvincias(List<Tuple<ApartadoDVentana.Provincia, ColorProvincia>> sol)
+            for (int i = 0; i < nColores; i++)
+            {
+                coloresElejidos.Add(ApartadoDVentana.coloresDisponibles[i]);
+            }
+            imprimirSolucion();
+        }
+
+        private void imprimirSolucion()
+        {
+            if (coloresElejidos == null)
+            {
+                sol = ApartadoDVentana.SolucionColorear(
+                    new Tuple<ApartadoDVentana.Mapa, List<ColorProvincia>>(ApartadoDVentana.andalucia,
+                                                                            ApartadoDVentana.coloresDisponibles));
+            }
+            else
+            {
+                sol = ApartadoDVentana.SolucionColorear(
+                    new Tuple<ApartadoDVentana.Mapa, List<ColorProvincia>>(ApartadoDVentana.andalucia,
+                                                                            coloresElejidos));
+            }
+            // Pintar la nueva provincia en mapa
+            if(sol == null || sol.Count < ApartadoDVentana.provs.Count)
+            {
+                Console.WriteLine("No hay colores suficientes para encontrar una solución");
+            }
+            else
+                FuncionIntroducirProvincias(sol);
+        }
+
+            private void FuncionIntroducirProvincias(List<Tuple<ApartadoDVentana.Provincia, ColorProvincia>> sol)
         {
             foreach (Tuple<ApartadoDVentana.Provincia, ColorProvincia> t in sol)
             {

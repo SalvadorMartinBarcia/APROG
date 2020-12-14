@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{14508A5E-13D8-4DCB-B1EC-AA4203D78EE8}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Pract3B</RootNamespace>
+    <AssemblyName>Pract3B</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApartadoB\ApartadoBConsola.cs" />
+    <Compile Include="ApartadoB\ApartadoBVentana.cs" />
+    <Compile Include="ApartadoB\Coloreador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApartadoB\Coloreador.Designer.cs">
+      <DependentUpon>Coloreador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApartadoB\Interfaz.cs" />
+    <Compile Include="ApartadoB\InterfazConsola.cs" />
+    <Compile Include="ApartadoB\InterfazVentanas.cs" />
+    <Compile Include="ApartadoB\MainB.cs" />
+    <Compile Include="ApartadoC\ApartadoCConsola.cs" />
+    <Compile Include="ApartadoC\ApartadoCVentana.cs" />
+    <Compile Include="ApartadoC\Coloreador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApartadoC\Coloreador.Designer.cs">
+      <DependentUpon>Coloreador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApartadoC\Interfaz.cs" />
+    <Compile Include="ApartadoC\InterfazConsola.cs" />
+    <Compile Include="ApartadoC\InterfazVentanas.cs" />
+    <Compile Include="ApartadoC\MainC.cs" />
+    <Compile Include="ApartadoD\ApartadoDConsola.cs" />
+    <Compile Include="ApartadoD\ApartadoDVentana.cs" />
+    <Compile Include="ApartadoD\Coloreador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApartadoD\Coloreador.Designer.cs">
+      <DependentUpon>Coloreador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApartadoD\Interfaz.cs" />
+    <Compile Include="ApartadoD\InterfazConsola.cs" />
+    <Compile Include="ApartadoD\InterfazVentanas.cs" />
+    <Compile Include="ApartadoD\MainD.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ApartadoB\Coloreador.resx">
+      <DependentUpon>Coloreador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApartadoC\Coloreador.resx">
+      <DependentUpon>Coloreador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApartadoD\Coloreador.resx">
+      <DependentUpon>Coloreador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="ApartadoB\App.config" />
+    <None Include="ApartadoC\App.config" />
+    <None Include="ApartadoD\App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

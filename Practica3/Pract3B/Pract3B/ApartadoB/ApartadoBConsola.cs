@@ -18,13 +18,13 @@ namespace ApartadoB
 
             sol = SolucionColorear(new Tuple<Mapa, List<ColorProvincia>>(andalucia, colores1));
 
-            List<List<Char>> mosaicoInicial = MosaicoInicial();
+            IEnumerable<List<Char>> mosaicoInicial = MosaicoInicial();
 
             DibujarMosaico(mosaicoInicial);
 
             MostrarSeparador();
 
-            List<List<Char>> mosaicoSol = IncluirProvincias(mosaicoInicial, sol);
+            IEnumerable<List<Char>> mosaicoSol = IncluirProvincias(mosaicoInicial, sol);
 
             DibujarMosaico(mosaicoSol);
 
@@ -234,7 +234,26 @@ namespace ApartadoB
 
         //-----------------------------MOSAICOS-----------------------------//
 
-        public static List<List<Char>> MosaicoInicial()
+        //public static List<List<Char>> MosaicoInicial()
+        //{
+        //    int i, j;
+        //    List<List<Char>> res = new List<List<Char>>();
+        //    List<Char> aux;
+
+        //    for (i = 0; i < MAXIMOY; i++) // Y
+        //    {
+        //        aux = new List<Char>();
+        //        for (j = 0; j < MAXIMOX; j++) // X
+        //        {
+        //            aux.Add('.');
+        //        }
+        //        res.Add(aux);
+        //    }
+
+        //    return res;
+        //}
+
+        public static IEnumerable<List<Char>> MosaicoInicial()
         {
             int i, j;
             List<List<Char>> res = new List<List<Char>>();
@@ -247,13 +266,13 @@ namespace ApartadoB
                 {
                     aux.Add('.');
                 }
-                res.Add(aux);
+                yield return aux;
             }
 
-            return res;
+            yield break;
         }
 
-        public static void DibujarMosaico(List<List<Char>> mosaico)
+        public static void DibujarMosaico(IEnumerable<List<Char>> mosaico)
         {
             foreach (List<Char> aux in mosaico)
             {
@@ -265,7 +284,7 @@ namespace ApartadoB
             }
         }
 
-        public static List<List<Char>> IncluirProvincias(List<List<Char>> mosaico, List<Tuple<Provincia, ColorProvincia>> lista)
+        public static IEnumerable<List<Char>> IncluirProvincias(IEnumerable<List<Char>> mosaico, List<Tuple<Provincia, ColorProvincia>> lista)
         {
 
             foreach (Tuple<Provincia, ColorProvincia> t in lista)
@@ -276,7 +295,7 @@ namespace ApartadoB
             return mosaico;
         }
 
-        public static List<List<Char>> IncluirProvincia(Provincia prov, ColorProvincia color, List<List<Char>> mosaico)
+        public static IEnumerable<List<Char>> IncluirProvincia(Provincia prov, ColorProvincia color, IEnumerable<List<Char>> mosaico)
         {
             int i, j;
             List<List<Char>> res = new List<List<Char>>();

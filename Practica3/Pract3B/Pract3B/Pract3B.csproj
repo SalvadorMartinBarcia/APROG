@@ -61,39 +61,9 @@
     <Compile Include="ApartadoB\InterfazConsola.cs" />
     <Compile Include="ApartadoB\InterfazVentanas.cs" />
     <Compile Include="ApartadoB\MainB.cs" />
-    <Compile Include="ApartadoC\ApartadoCConsola.cs" />
-    <Compile Include="ApartadoC\ApartadoCVentana.cs" />
-    <Compile Include="ApartadoC\Coloreador.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ApartadoC\Coloreador.Designer.cs">
-      <DependentUpon>Coloreador.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ApartadoC\Interfaz.cs" />
-    <Compile Include="ApartadoC\InterfazConsola.cs" />
-    <Compile Include="ApartadoC\InterfazVentanas.cs" />
-    <Compile Include="ApartadoC\MainC.cs" />
-    <Compile Include="ApartadoD\ApartadoDConsola.cs" />
-    <Compile Include="ApartadoD\ApartadoDVentana.cs" />
-    <Compile Include="ApartadoD\Coloreador.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ApartadoD\Coloreador.Designer.cs">
-      <DependentUpon>Coloreador.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ApartadoD\Interfaz.cs" />
-    <Compile Include="ApartadoD\InterfazConsola.cs" />
-    <Compile Include="ApartadoD\InterfazVentanas.cs" />
-    <Compile Include="ApartadoD\MainD.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ApartadoB\Coloreador.resx">
-      <DependentUpon>Coloreador.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ApartadoC\Coloreador.resx">
-      <DependentUpon>Coloreador.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ApartadoD\Coloreador.resx">
       <DependentUpon>Coloreador.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -106,8 +76,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="ApartadoB\App.config" />
-    <None Include="ApartadoC\App.config" />
-    <None Include="ApartadoD\App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

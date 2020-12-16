@@ -10,26 +10,9 @@ namespace Pract3B
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            Console.WriteLine("Elige una ejecucion de un apartado:");
-            Console.WriteLine("1. ApartadoB");
-            Console.WriteLine("2. ApartadoC");
-            Console.WriteLine("3. ApartadoD");
-
-            string opcion = Console.ReadLine();
-
-            if (opcion == "1")
-            {
-                ApartadoB.MainB.MainBB();
-            }
-            else if (opcion == "2")
-            {
-                ApartadoC.MainC.MainCC();
-            }
-            else
-            {
-                ApartadoD.MainD.MainDD();
-            }
+            Console.WriteLine("ApartadoB");
+            
+            ApartadoB.MainB.MainBB();
         }
     }
 }

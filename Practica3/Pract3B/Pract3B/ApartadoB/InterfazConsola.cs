@@ -5,6 +5,7 @@ namespace ApartadoB
 {
     public class InterfazConsola : Interfaz
     {
+        public InterfazConsola() => ApartadoB.MainBConsola();
         public override void RealizarOperacion() 
             => ApartadoB.MainBConsola(); 
         public override bool ConfirmarContinuacion() {

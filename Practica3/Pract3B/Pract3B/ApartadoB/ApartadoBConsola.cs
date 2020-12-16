@@ -297,7 +297,7 @@ namespace ApartadoB
 
         public static IEnumerable<List<Char>> IncluirProvincia(Provincia prov, ColorProvincia color, IEnumerable<List<Char>> mosaico)
         {
-            int i, j;
+            int i, j, z;
             List<List<Char>> res = new List<List<Char>>();
             List<Char> aux;
 
@@ -325,7 +325,15 @@ namespace ApartadoB
                     }
                     else
                     {
-                        aux.Add(mosaico[i][j]);
+                        z = 0;
+                        foreach (List<Char> m in mosaico)
+                        {
+                            if(z == i)
+                            {
+                                aux.Add(m[j]);
+                            }
+                            z++;
+                        }
                     }
                 }
                 res.Add(aux);

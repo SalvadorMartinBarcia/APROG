@@ -30,6 +30,10 @@ namespace Pract3
             {
                 ApartadoD.MainD.MainDD();
             }
+
+            Console.WriteLine("¿Quieres elegir otro apartado?(s/n)");
+            opcion = Console.ReadLine();
+            if(opcion == "s") Main();
         }
     }
 }
